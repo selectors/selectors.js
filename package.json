@@ -1,0 +1,19 @@
+{
+  "name": "selectors.js",
+  "version": "1.0.0",
+  "description": "Matches and validates CSS selectors.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Donnelly",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1"
+  }
+}
