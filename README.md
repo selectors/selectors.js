@@ -47,13 +47,13 @@ It also accepts an optional `htmlStrict` Boolean value (which defaults to `false
 
 
 ```JavaScript
-s.isValidSelector('div', true);                    // true
-s.isValidSelector('potato', true);                 // false - HTML5 has no `potato` element
+s.isValidSelector('div', true);               // true
+s.isValidSelector('potato', true);            // false - HTML5 has no `potato` element
 
-s.isValidSelector('[checked]', true);              // true
-s.isValidSelector('[aria-role]', true);            // true
-s.isValidSelector('[example]', true);              // false - HTML5 has no `example` attribute
-s.isValidSelector('[data-example]', true);         // true
+s.isValidSelector('[checked]', true);         // true
+s.isValidSelector('[aria-role]', true);       // true
+s.isValidSelector('[example]', true);         // false - HTML5 has no `example` attribute
+s.isValidSelector('[data-example]', true);    // true
 ```
 
 ###s.getType( selector )
