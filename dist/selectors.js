@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md
 
- * Last built: Monday, 21st March 2016; 4:36:17 PM
+ * Last built: Monday, 21st March 2016; 5:20:55 PM
  */
 
 "use strict";
@@ -533,7 +533,10 @@ s._selectors_group = s._selector + "(" + s._COMMA + "\\s*" + s._selector + ")*";
  */
 
 /* This function takes a pseudo class and validates it according to the various CSS
- * specifications.
+ * documentation, specifically:
+ * 
+ * 1. https://www.w3.org/TR/selectors/#pseudo-classes
+ * 2. https://www.w3.org/TR/CSS21/syndata.html#vendor-keywords
  */
 s._isValidCssPseudoClass = function(pseudoClass) {
   var
@@ -587,8 +590,6 @@ s._isValidCssPseudoClass = function(pseudoClass) {
 /* This function takes a pseudo element and validates it according to section 7 (Pseudo-
  * elements) within the Selectors Level 3 recommendation:
  * 
- * https://www.w3.org/TR/selectors/#pseudo-elements
- * 
  * > A pseudo-element is made of two colons (::) followed by the name of the pseudo
  * > element.
  *
@@ -598,6 +599,8 @@ s._isValidCssPseudoClass = function(pseudoClass) {
  * > for pseudo-elements introduced in CSS levels 1 and 2 (namely, :first-line,
  * > :first-letter, :before and :after). This compatibility is not allowed for the new
  * > pseudo-elements introduced in this specification.
+ * 
+ * https://www.w3.org/TR/selectors/#pseudo-elements
  * 
  * Note: The last sentence there is an artifact from when the Level 3 document
  *       implemented a new ::selection pseudo-element. This has since been removed. 
