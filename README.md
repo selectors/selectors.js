@@ -1,5 +1,6 @@
 #Selectors.js
 [![Build Status and Testing](https://travis-ci.org/JamesDonnelly/selectors.js.svg?branch=master)](https://travis-ci.org/JamesDonnelly/selectors.js)
+[![Coverage Status](https://coveralls.io/repos/github/JamesDonnelly/selectors.js/badge.svg?branch=master)](https://coveralls.io/github/JamesDonnelly/selectors.js?branch=master)
 [![Dependency Status](https://david-dm.org/JamesDonnelly/selectors.js.svg)](https://david-dm.org/JamesDonnelly/selectors.js)
 [![devDependency Status](https://david-dm.org/JamesDonnelly/selectors.js/dev-status.svg)](https://david-dm.org/JamesDonnelly/selectors.js#info=devDependencies)
 
