@@ -41,17 +41,45 @@ module.exports = function(grunt) {
       }
     },
     jasmine: {
-      src: "dist/selectors.min.js",
-      options: {
-        specs: "test/**/*.js"
+      coverage: {
+        src: "dist/selectors.min.js",
+        options: {
+          specs: "test/**/*.js",
+          template: require('grunt-template-jasmine-istanbul'),
+          templateOptions: {
+            coverage: 'bin/coverage/coverage.json',
+            report: {
+              type: 'lcov',
+              options: {
+                dir: 'bin/coverage/lcov'
+              }
+            },
+            thresholds: {
+              lines: 50,
+              statements: 50,
+              branches: 50,
+              functions: 50
+            }
+          }
+        }
       }
-    }
+    },
+    coveralls: {
+      options: {
+        force: false
+      },
+
+      your_target: {
+        src: 'bin/coverage/lcov/lcov.info'
+      },
+    },
   });
   
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-coveralls');
 
-  grunt.registerTask('test', ['jasmine']);
-  grunt.registerTask('default', ['concat', 'uglify', 'test']);
+  grunt.registerTask('test', ['jasmine', 'coveralls']);
+  grunt.registerTask('default', ['concat', 'uglify', 'jasmine']);
 };

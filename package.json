@@ -12,9 +12,15 @@
   "author": "James Donnelly",
   "license": "ISC",
   "devDependencies": {
+    "coveralls": "^2.11.8",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-jasmine": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1"
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-coveralls": "^1.0.0",
+    "grunt-template-jasmine-istanbul": "^0.4.0",
+    "istanbul": "^0.4.2",
+    "lodash": "^4.6.1",
+    "lodash.template": "^4.2.2"
   }
 }
