@@ -38,9 +38,9 @@ s.isValidSelector(':_alt-vendor-specific');    // true
 s.isValidSelector(':potato');                  // false
 ```
 
+:heavy_exclamation_mark: [**Status: TODO**]
 It also accepts an optional `htmlStrict` Boolean value (which defaults to `false`). When `true`, it validates element types and attributes against the HTML5 specification.
 
-:scream_cat: Status: TODO
 
 ```JavaScript
 s.isValidSelector('div', true);                    // true
