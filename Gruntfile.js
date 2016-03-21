@@ -12,17 +12,19 @@ module.exports = function(grunt) {
               + ' */\n\n'
               + '"use strict";',
         process: function(src, filepath) {
-          return '\n\n/* Source: ' + filepath
+          return '\n/* Source: ' + filepath
               + '\n * -------------------------------------------------------------------------------------'
-              + '\n *' + src.replace(/^\/\*/, '');
+              + src.replace(/^\/\* https:\/\/github.com\/JamesDonnelly\/Selectors\.js/, '');
         },
       },
       dist: {
         src: [
           'src/selectors.js',
+          'src/helper.js',
           'src/W3Core.js',
           'src/W3Extended.js',
-          'src/W3Grammar.js'
+          'src/W3Grammar.js',
+          'src/pseudo.js'
         ],
         dest: 'dist/selectors.js'
       }

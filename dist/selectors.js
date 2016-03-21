@@ -4,11 +4,10 @@
  * Released under the MIT license
  * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md
 
- * Last built: Monday, 21st March 2016; 1:00:43 PM
+ * Last built: Monday, 21st March 2016; 4:36:17 PM
  */
 
 "use strict";
-
 /* Source: src/selectors.js
  * -------------------------------------------------------------------------------------
  * This file defines the main object (`s`) and the core selectors.js functionality.
@@ -17,23 +16,130 @@
  * with an '_' (underscore) character (like `s._*`), whereas properties which are
  * designed to be called upon directly aren't.
  */
-var s = {};
+var
+  s = {},
+  CSSSelector = function() {
+    
+  }
+;
 
 /* This function takes a string of selectors and returns either true or false depending
  * on whether it's valid.
+ * 
+ * It's worth noting that this is somewhat loose validation in that it doesn't validate
+ * pseudo-classes or pseudo-elements. It instead lumps them into one pseudo category,
+ * with no name checking performed meaning ::hover(2n+1) is counted as valid with this.
  * ------
- * @{selector}: A string of CSS selectors (e.g. foo.bar) or selector groups (foo, .bar).
+ * @{selectors}: A STRING of CSS selectors (e.g. foo.bar) or selector groups (foo, bar).
  */
-s.isValidSelector = function(selector) {
-  if (typeof selector !== "string")
-    throw new Error("s.isValidSelector expected string value, instead was passed: " + selector);
+s.isValidSelectorsGroup = function(selectorsGroup) {
+  if (typeof selectorsGroup !== "string")
+    throw new Error("s.isValidSelectorsGroup expected string value, instead was passed: " + selectorsGroup);
     
-  if (selector === "")
+  if (selectorsGroup === "")
     return false;
   
-  return new RegExp("^" + s._selectors_group + "$").test(selector);
+  return s._isExactMatch(s._selectors_group, selectorsGroup);
+}
+
+/* This function takes an individual selector and returns either true or false depending
+ * on whether it's valid.
+ * 
+ * This is more accurate than s.isValidSelectorsGroup as it compares pseudo-classes and
+ * pseudo-elements with the various CSS specifications rather than just assuming
+ * anything prefixed with ':' or '::' is valid.
+ * ------
+ * @{selector}: An individual CSS selector STRING (e.g. foo or .bar).
+ * @{htmlStrict}: A BOOLEAN which compares types and attributes with HTML specs.
+ */
+s.isValidSelector = function(selector, htmlStrict) {
+  if (typeof selector !== "string")
+    throw new Error("s.isValidSelector expected string value as its first argument, instead was passed: " + selectorsGroup);
+  
+  var htmlStrict = htmlStrict || false;
+  
+  if (typeof htmlStrict !== "boolean")
+    throw new Error("s.isValidSelector expected boolean value as its second argument, instead was passed: " + selectorsGroup);
+  
+  /* Validate the selector based on its type.
+   * This is wrapped in a try..catch return a friendly false in place of an invalid
+   * selector exception.
+   */
+  try {
+    switch (s.getType(selector)) {
+      case "type":
+        if (htmlStrict) {
+          break;
+        }
+      case "universal":
+      case "class":
+      case "id":
+      case "attribute":
+      case "negation":
+        return true;
+      case "pseudo-class":
+        return s._isValidCssPseudoClass(selector);
+      case "pseudo-element":
+        return s._isValidCssPseudoElement(selector);
+    }
+  }
+  catch (e) {
+    return false;
+  }
+}
+
+/* This function takes an individual selector and returns what it is (e.g. an input of
+ * ".foo" would return "class").
+ * ------
+ * @(selector): An individual CSS selector STRING (e.g. foo or .bar).
+ */
+s.getType = function(selector) {
+  if (s._isExactMatch(s._type_selector, selector))
+    return "type";
+  else if (s._isExactMatch(s._universal, selector))
+    return "universal";
+  else if (s._isExactMatch(s._class, selector))
+    return "class";
+  else if (s._isExactMatch(s._HASH, selector))
+    return "id";
+  else if (s._isExactMatch(s._attrib, selector))
+    return "attribute";
+  else if (s._isExactMatch(s._negation, selector))
+    return "negation";
+  else if (s._isExactMatch(s._pseudo, selector)) {
+    if (selector.charAt(1) !== ":"
+      && selector !== ":first-line"
+      && selector !== ":first-letter"
+      && selector !== ":before"
+      && selector !== ":after")
+      return "pseudo-class";
+    else
+      return "pseudo-element";
+  }
+  else
+    // If none of the above match, invalid or multiple selectors have been passed in.
+    throw new Error("s.getType should be passed 1 valid selector, instead was passed: " + selector);
 };
 
+/* Source: src/helper.js
+ * -------------------------------------------------------------------------------------
+ * This file defines non-selector-specific helper functions to reduce repetition within
+ * the selectors.js file.
+ */
+
+/* This internal function attempts to exactly match a given test case with a given
+ * pattern by wrapping it with ^ and $.
+ * ------
+ * @{pattern} - A regular expression pattern (STRING or REGEXP).
+ * @{testCase} - The STRING to test.
+ */
+s._isExactMatch = function(pattern, testCase) {
+  // If it's already a regular expression, extract the source and use that instead.
+  if (pattern instanceof RegExp)
+    pattern = pattern.source;
+    
+  return new RegExp("^" + pattern + "$").test(testCase);
+};
 
 /* Source: src/W3Core.js
  * -------------------------------------------------------------------------------------
@@ -240,7 +346,6 @@ s._CDO = "<!--";
 // "-->"            return CDC;
 s._CDC = "-->";;
 
-
 /* Source: src/W3Extended.js
  * -------------------------------------------------------------------------------------
  * W3Extended incorporates the regular expressions implied and defined elsewhere in the
@@ -269,8 +374,25 @@ s._nth = "\\s*("
     + s._O + s._D + s._D
   + "|"
     + s._E + s._V + s._E + s._N
-  + ")\\s*)";;
+  + ")\\s*)";
 
+/* :lang(C) ... C must be a valid CSS identifier and must not be empty. (Otherwise, the
+ * selector is invalid.
+ * 
+ * https://www.w3.org/TR/selectors/#lang-pseudo
+ */
+s._lang = ":lang\\(" + s._ident + "\\)";
+
+/* > In CSS, identifiers may begin with '-' (dash) or '_' (underscore). Keywords and
+ * property names beginning with -' or '_' are reserved for vendor-specific extensions.
+ * Such vendor-specific extensions should have one of the following formats:
+ * 
+ *   '-' + vendor identifier + '-' + meaningful name
+ *   '_' + vendor identifier + '-' + meaningful name
+ * 
+ * https://www.w3.org/TR/CSS21/syndata.html#vendor-keywords
+ */
+s._vendor_prefixed_pseudo = ":[-_]" + s._nmstart + s._nmchar + "*-" + s._nmstart + s._nmchar + "*";;
 
 /* Source: src/W3Grammar.js
  * -------------------------------------------------------------------------------------
@@ -364,8 +486,6 @@ s._functional_pseudo = s._FUNCTION + "\\s*" + s._expression + "\\)";
  *  // occur only in the last simple_selector_sequence.
  *  : ':' ':'? [ IDENT | functional_pseudo ]
  *  ;
- * 
- * Selectors.js: functional_pseudo and ident have been flipped to ensure a full match.
  */
 s._pseudo = "::?(" + s._ident + "|" + s._functional_pseudo + ")";
 
@@ -379,7 +499,7 @@ s._negation_arg = "(" + s._type_selector + "|" + s._universal + "|" + s._HASH + 
  *  : NOT S* negation_arg S* ')'
  *  ;
  */
-s._negation = "(" + s._NOT + "\\s*" + s._negation_arg + "\\s*" + ")";
+s._negation = "(" + s._NOT + "\\s*" + s._negation_arg + "\\s*\\)" + ")";
 
 /* simple_selector_sequence
  *  : [ type_selector | universal ]
@@ -404,4 +524,96 @@ s._selector = s._simple_selector_sequence + "(" + s._combinator + s._simple_sele
  *  : selector [ COMMA S* selector ]*
  *  ;
  */
-s._selectors_group = s._selector + "(" + s._COMMA + "\\s*" + s._selector + ")*";
+s._selectors_group = s._selector + "(" + s._COMMA + "\\s*" + s._selector + ")*";;
+
+/* Source: src/pseudo.js
+ * -------------------------------------------------------------------------------------
+ * This file provides helper functions and expressions related to pseudo-classes and
+ * pseudo-elements.
+ */
+
+/* This function takes a pseudo class and validates it according to the various CSS
+ * specifications.
+ */
+s._isValidCssPseudoClass = function(pseudoClass) {
+  var
+    simple = [
+      ':root', ':first-child', ':last-child', ':first-of-type', ':last-of-type',
+      ':only-child', ':only-of-type', ':empty', ':link', ':visited', ':active',
+      ':hover', ':focus', ':target', ':enabled', ':disabled', ':checked'
+    ],
+    nth = [
+      ':nth-child', ':nth-last-child', ':nth-of-type', ':nth-last-of-type'
+    ],
+    brackets = /\(.*\)$/,
+    noBrackets,
+    hasBrackets = false
+  ;
+  
+  // If it's one of the simple pseudo-classes it's valid right away.
+  if (simple.indexOf(pseudoClass) > -1)
+    return true;
+    
+  // Strip any brackets for the next few checks.
+  noBrackets = pseudoClass.replace(brackets, function() {
+    hasBrackets = true;
+    return '';
+  });  
+  
+  // If it has brackets, check and validate functions.
+  if (hasBrackets) {
+    // If it's the lang attribute, ensure it has a value.
+    if (noBrackets === ":lang")
+      return s._isExactMatch(s._lang, pseudoClass);
+    
+    // If it's an nth-* pseudo-class, validate its function.
+    if (nth.indexOf(noBrackets) > -1) {
+      // Grab the brackets.
+      var bracketValue = pseudoClass.match(brackets, '');
+      
+      // Ensure they exist, otherwise it's invalid.
+      if (!bracketValue || !bracketValue.length || !bracketValue[0])
+        return false;
+      
+      // Validate it with the s._nth expression.
+      return s._isExactMatch(s._nth, bracketValue[0].replace(/\(|\)/g, ''));
+    }
+  }
+  
+  // If it gets this far it's a vendor-prefixed pseudo-class.
+  return s._isExactMatch(s._vendor_prefixed_pseudo, pseudoClass);
+}
+
+/* This function takes a pseudo element and validates it according to section 7 (Pseudo-
+ * elements) within the Selectors Level 3 recommendation:
+ * 
+ * https://www.w3.org/TR/selectors/#pseudo-elements
+ * 
+ * > A pseudo-element is made of two colons (::) followed by the name of the pseudo
+ * > element.
+ *
+ * > This :: notation is introduced by the current document in order to establish a
+ * > discrimination between pseudo-classes and pseudo-elements. For compatibility with
+ * > existing style sheets, user agents must also accept the previous one-colon notation
+ * > for pseudo-elements introduced in CSS levels 1 and 2 (namely, :first-line,
+ * > :first-letter, :before and :after). This compatibility is not allowed for the new
+ * > pseudo-elements introduced in this specification.
+ * 
+ * Note: The last sentence there is an artifact from when the Level 3 document
+ *       implemented a new ::selection pseudo-element. This has since been removed. 
+ */
+s._isValidCssPseudoElement = function(pseudoElement) {
+  switch (pseudoElement) {
+    case ":first-line":
+    case ":first-letter":
+    case ":before":
+    case ":after":
+    case "::first-line":
+    case "::first-letter":
+    case "::before":
+    case "::after":
+      return true;
+    default:
+      return false;
+  }
+}

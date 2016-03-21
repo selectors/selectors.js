@@ -1,4 +1,5 @@
-/* W3Core incorporates the regular expressions defined and extended upon in the
+/* https://github.com/JamesDonnelly/Selectors.js
+ * W3Core incorporates the regular expressions defined and extended upon in the
  * following W3C Recommendations' sections:
  *
  * 1. https://www.w3.org/TR/CSS21/syndata.html#tokenization

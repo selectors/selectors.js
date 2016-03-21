@@ -1,4 +1,5 @@
-/* W3Grammar incorporates the 'Syntax of Selectors' defined and extended upon in the
+/* https://github.com/JamesDonnelly/Selectors.js
+ * W3Grammar incorporates the 'Syntax of Selectors' defined and extended upon in the
  * following W3C Recommendations' sections:
  *
  * 1. https://www.w3.org/TR/CSS21/syndata.html#tokenization
@@ -88,8 +89,6 @@ s._functional_pseudo = s._FUNCTION + "\\s*" + s._expression + "\\)";
  *  // occur only in the last simple_selector_sequence.
  *  : ':' ':'? [ IDENT | functional_pseudo ]
  *  ;
- * 
- * Selectors.js: functional_pseudo and ident have been flipped to ensure a full match.
  */
 s._pseudo = "::?(" + s._ident + "|" + s._functional_pseudo + ")";
 
@@ -103,7 +102,7 @@ s._negation_arg = "(" + s._type_selector + "|" + s._universal + "|" + s._HASH + 
  *  : NOT S* negation_arg S* ')'
  *  ;
  */
-s._negation = "(" + s._NOT + "\\s*" + s._negation_arg + "\\s*" + ")";
+s._negation = "(" + s._NOT + "\\s*" + s._negation_arg + "\\s*\\)" + ")";
 
 /* simple_selector_sequence
  *  : [ type_selector | universal ]
