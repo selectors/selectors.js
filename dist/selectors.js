@@ -1,12 +1,43 @@
+/*!
+ * Selectors.js - https://github.com/JamesDonnelly/Selectors.js
+
+ * Released under the MIT license
+ * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md
+
+ * Last built: Monday, 21st March 2016; 1:00:43 PM
+ */
+
+"use strict";
+
+/* Source: src/selectors.js
+ * -------------------------------------------------------------------------------------
+ * This file defines the main object (`s`) and the core selectors.js functionality.
+ * `s` is the main object used throughout selectors.js. Everything is called using
+ * `s.*`. Internal properties (which shouldn't really be used directly) are prefixed
+ * with an '_' (underscore) character (like `s._*`), whereas properties which are
+ * designed to be called upon directly aren't.
+ */
 var s = {};
 
+/* This function takes a string of selectors and returns either true or false depending
+ * on whether it's valid.
+ * ------
+ * @{selector}: A string of CSS selectors (e.g. foo.bar) or selector groups (foo, .bar).
+ */
 s.isValidSelector = function(selector) {
   if (typeof selector !== "string")
     throw new Error("s.isValidSelector expected string value, instead was passed: " + selector);
+    
+  if (selector === "")
+    return false;
   
   return new RegExp("^" + s._selectors_group + "$").test(selector);
 };
-/* W3Core incorporates the regular expressions defined and extended upon in the
+
+
+/* Source: src/W3Core.js
+ * -------------------------------------------------------------------------------------
+ * W3Core incorporates the regular expressions defined and extended upon in the
  * following W3C Recommendations' sections:
  *
  * 1. https://www.w3.org/TR/CSS21/syndata.html#tokenization
@@ -208,7 +239,11 @@ s._CDO = "<!--";
 
 // "-->"            return CDC;
 s._CDC = "-->";;
-/* W3Extended incorporates the regular expressions implied and defined elsewhere in the
+
+
+/* Source: src/W3Extended.js
+ * -------------------------------------------------------------------------------------
+ * W3Extended incorporates the regular expressions implied and defined elsewhere in the
  * documentation linked in W3Core.js. For each of these, a link to the source has been
  * provided for ease.
  */
@@ -235,7 +270,11 @@ s._nth = "\\s*("
   + "|"
     + s._E + s._V + s._E + s._N
   + ")\\s*)";;
-/* W3Grammar incorporates the 'Syntax of Selectors' defined and extended upon in the
+
+
+/* Source: src/W3Grammar.js
+ * -------------------------------------------------------------------------------------
+ * W3Grammar incorporates the 'Syntax of Selectors' defined and extended upon in the
  * following W3C Recommendations' sections:
  *
  * 1. https://www.w3.org/TR/CSS21/syndata.html#tokenization
@@ -269,7 +308,7 @@ s._type_selector = "(" + s._namespace_prefix + ")?" + s._ident;
   * : [ namespace_prefix ]? '*'
   * ;
   */
-s._unversal = "(" + s._namespace_prefix + ")?\\*";
+s._universal = "(" + s._namespace_prefix + ")?\\*";
 
 /* class
  *  : '.' IDENT

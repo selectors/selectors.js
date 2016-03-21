@@ -32,7 +32,7 @@ s._type_selector = "(" + s._namespace_prefix + ")?" + s._ident;
   * : [ namespace_prefix ]? '*'
   * ;
   */
-s._unversal = "(" + s._namespace_prefix + ")?\\*";
+s._universal = "(" + s._namespace_prefix + ")?\\*";
 
 /* class
  *  : '.' IDENT

@@ -14,6 +14,9 @@ var s = {};
 s.isValidSelector = function(selector) {
   if (typeof selector !== "string")
     throw new Error("s.isValidSelector expected string value, instead was passed: " + selector);
+    
+  if (selector === "")
+    return false;
   
   return new RegExp("^" + s._selectors_group + "$").test(selector);
 }

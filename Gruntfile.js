@@ -3,8 +3,19 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        // define a string to put between each file in the concatenated output
-        separator: ';\n'
+        separator: ';\n',
+        banner: '/*!\n'
+              + ' * Selectors.js - https://github.com/JamesDonnelly/Selectors.js\n\n'
+              + ' * Released under the MIT license\n'
+              + ' * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md\n\n'
+              + ' * Last built: <%= grunt.template.today("dddd, dS mmmm yyyy; h:MM:ss TT") %>\n'
+              + ' */\n\n'
+              + '"use strict";',
+        process: function(src, filepath) {
+          return '\n\n/* Source: ' + filepath
+              + '\n * -------------------------------------------------------------------------------------'
+              + '\n *' + src.replace(/^\/\*/, '');
+        },
       },
       dist: {
         src: [
@@ -18,8 +29,8 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! Selectors.js v<%= pkg.version %> | '
+						  + '(c) https://github.com/JamesDonnelly/Selectors.js | https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md */\n',
       },
       dist: {
         files: {
@@ -39,6 +50,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-  grunt.registerTask('default', ['concat', 'uglify']);
   grunt.registerTask('test', ['jasmine']);
+  grunt.registerTask('default', ['concat', 'uglify', 'test']);
 };
