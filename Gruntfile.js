@@ -69,8 +69,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-coveralls');
 
-  grunt.registerTask('test', ['jasmine', 'coveralls']);
+  grunt.registerTask('test', ['jasmine']);
   grunt.registerTask('default', ['concat', 'uglify', 'jasmine']);
 };
