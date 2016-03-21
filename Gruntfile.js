@@ -63,16 +63,7 @@ module.exports = function(grunt) {
           }
         }
       }
-    },
-    coveralls: {
-      options: {
-        force: false
-      },
-
-      your_target: {
-        src: 'bin/coverage/lcov/lcov.info'
-      },
-    },
+    }
   });
   
   grunt.loadNpmTasks('grunt-contrib-uglify');
