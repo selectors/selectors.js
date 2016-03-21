@@ -1,4 +1,8 @@
 #Selectors.js
+[![Build Status and Testing](https://travis-ci.org/JamesDonnelly/selectors.js.svg?branch=master)](https://travis-ci.org/JamesDonnelly/selectors.js)
+[![Dependency Status](https://david-dm.org/JamesDonnelly/selectors.js.svg)](https://david-dm.org/JamesDonnelly/selectors.js)
+[![devDependency Status](https://david-dm.org/JamesDonnelly/selectors.js/dev-status.svg)](https://david-dm.org/JamesDonnelly/selectors.js#info=devDependencies)
+
 Selectors.js is a CSS Selector matcher and validator initially created for use by [Selectors.io](https://selectors.io).
 
 This uses [Grunt](http://gruntjs.com) for minifying, concatenating and testing ([Jasmine](http://jasmine.github.io/)). These are configured through [Node.js](https://nodejs.org/en/), so you'll also need to install that, then run the following command to install the packages:
