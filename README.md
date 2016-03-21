@@ -5,8 +5,6 @@ This uses [Grunt](http://gruntjs.com) for minifying and concatenating and [Jasmi
 
     npm install
 
----
-
 ## Documentation
 ### s.isValidSelector( selector )
 This function takes a string of CSS selectors (e.g. `"foo.bar"`) or selector groups (e.g. "`foo, .bar"`) and returns `true` or `false` depending on whether it's valid.

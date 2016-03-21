@@ -26,11 +26,19 @@ module.exports = function(grunt) {
           'dist/selectors.min.js': ['dist/selectors.js']
         }
       }
+    },
+    jasmine: {
+      src: "dist/selectors.min.js",
+      options: {
+        specs: "test/**/*.js"
+      }
     }
   });
   
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('test', ['jasmine']);
 };
