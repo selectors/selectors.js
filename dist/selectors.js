@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md
 
- * Last built: Monday, 21st March 2016; 6:45:04 PM
+ * Last built: Tuesday, 22nd March 2016; 9:19:38 AM
  */
 
 "use strict";
@@ -17,10 +17,7 @@
  * designed to be called upon directly aren't.
  */
 var
-  s = {},
-  CSSSelector = function() {
-    
-  }
+  s = {}
 ;
 
 /* This function takes a string of selectors and returns either true or false depending
@@ -30,7 +27,7 @@ var
  * pseudo-classes or pseudo-elements. It instead lumps them into one pseudo category,
  * with no name checking performed meaning ::hover(2n+1) is counted as valid with this.
  * ------
- * @{selectors}: A STRING of CSS selectors (e.g. foo.bar) or selector groups (foo, bar).
+ * @{selectors}: A STRING of CSS selectors (e.g. foo.bar) or selectors group (foo, bar).
  */
 s.isValidSelectorsGroup = function(selectorsGroup) {
   if (typeof selectorsGroup !== "string")
@@ -82,6 +79,37 @@ s.isValidSelector = function(selector, htmlStrict) {
       case "pseudo-element":
         return s._isValidCssPseudoElement(selector);
     }
+  }
+  catch (e) {
+    return false;
+  }
+}
+
+/* This function wraps `document.querySelector` to perform faster validation. There are
+ * some pitfalls with this though in that it's implemented in different ways in
+ * different browsers and for most it doesn't recognise certain valid selector patterns:
+ * 
+ * 1. Namespaced types and universal (ns|div) returns false.
+ * 2. Vendor-prefixed pseudo-classes (:-webkit-... and :_custom-...) return false.
+ * 
+ * Some browsers also fire off some false positives:
+ * 
+ * 1. Two hyphens at the start of an identifier (#--) returns true.
+ * 
+ * Furthermore different browsers have different levels of support for certain
+ * selectors. Some browsers have already implemented some of the new Working Draft
+ * Level 4 selectors which aren't set in stone yet.
+ * ------
+ * @{selectors}: A STRING of CSS selectors (e.g. foo.bar) or selectors group (foo, bar).
+ */
+s.quickValidation = function(selectors) {
+  if (!document.querySelector)
+    throw new Error("This browser does not support `document.querySelector` which is used by `s.quickValidation`.")
+  
+  // Wrapped in a try..catch to return a friendly false if necessary.
+  try {
+    document.querySelector(selectors);
+    return true;
   }
   catch (e) {
     return false;

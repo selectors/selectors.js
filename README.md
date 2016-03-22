@@ -1,8 +1,8 @@
 #Selectors.js
-[![Build Status and Testing](https://travis-ci.org/JamesDonnelly/selectors.js.svg?branch=master)](https://travis-ci.org/JamesDonnelly/selectors.js)
+[![Build Status](https://travis-ci.org/temp-selectors/selectors.js.svg?branch=master)](https://travis-ci.org/temp-selectors/selectors.js)
 [![Coverage Status](https://coveralls.io/repos/github/JamesDonnelly/selectors.js/badge.svg?branch=master)](https://coveralls.io/github/JamesDonnelly/selectors.js?branch=master)
-[![Dependency Status](https://david-dm.org/JamesDonnelly/selectors.js.svg)](https://david-dm.org/JamesDonnelly/selectors.js)
-[![devDependency Status](https://david-dm.org/JamesDonnelly/selectors.js/dev-status.svg)](https://david-dm.org/JamesDonnelly/selectors.js#info=devDependencies)
+[![Dependency Status](https://david-dm.org/temp-selectors/selectors.js.svg)](https://david-dm.org/temp-selectors/selectors.js)
+[![devDependency Status](https://david-dm.org/temp-selectors/selectors.js/dev-status.svg)](https://david-dm.org/temp-selectors/selectors.js#info=devDependencies)
 
 Selectors.js is a CSS Selector matcher and validator initially created for use by [Selectors.io](https://selectors.io).
 
@@ -29,7 +29,7 @@ s.isValidSelectorsGroup('var example = "foo";');                      // false
 ```
 
 ###s.isValidSelector( selector [, htmlStrict ] )
-This function takes an individual `selector` and validates it. This is a more accurate than `s.isValidSelectorsGroup` for pseudo-classes and pseudo-elements as the selector name is validated against the various specifications.
+This function takes an individual `selector` and validates it. This is more accurate than `s.isValidSelectorsGroup` for pseudo-classes and pseudo-elements as the selector name is validated against the various specifications.
 
 ```JavaScript
 s.isValidSelector('div');                      // true
@@ -56,6 +56,16 @@ s.isValidSelector('[aria-role]', true);       // true
 s.isValidSelector('[example]', true);         // false - HTML5 has no `example` attribute
 s.isValidSelector('[data-example]', true);    // true
 ```
+
+### s.quickValidation ( selectors )
+This function takes a string of CSS `selectors` (e.g. `"foo.bar"`, a selectors group (e.g. "`foo, .bar"`) or an individual selector (`[bar=baz]`) and performs fast validation by wrapping `document.querySelector`.
+
+```JavaScript
+s.quickValidation('foo');          // true
+s.quickValidation('[att=val]');    // true
+```
+
+It's recommended **not** to use this if you're needing accurate results. Due to it wrapping `document.querySelector`, the results given by this differ between each browser. Most browser implementations falsly invalidate namespaces (like `ns|div`) and even their own vendor-prefixed pseudo-classes (like `:-webkit-marquee`, etc...). Some also give false positives on invalid identifier names (like `#--`).
 
 ###s.getType( selector )
 This function takes an individual `selector` (e.g. `"foo"` or `".bar"`) and returns what type of selector it is.
