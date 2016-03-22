@@ -87,7 +87,7 @@ s._isValidCssPseudoElement = function(pseudoElement) {
   if (!pseudoElement || typeof pseudoElement !== "string")
     return false;
   
-  switch (pseudoElement) {
+  switch (pseudoElement.toLowerCase()) {
     case ":first-line":
     case ":first-letter":
     case ":before":

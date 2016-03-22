@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 22nd March 2016; 11:59:02 AM
+ * Last built: Tuesday, 22nd March 2016; 12:05:40 PM
  */
 
 "use strict";
@@ -658,7 +658,7 @@ s._isValidCssPseudoElement = function(pseudoElement) {
   if (!pseudoElement || typeof pseudoElement !== "string")
     return false;
   
-  switch (pseudoElement) {
+  switch (pseudoElement.toLowerCase()) {
     case ":first-line":
     case ":first-letter":
     case ":before":
