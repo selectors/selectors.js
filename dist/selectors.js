@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 22nd March 2016; 12:05:40 PM
+ * Last built: Tuesday, 22nd March 2016; 2:41:13 PM
  */
 
 "use strict";
@@ -150,6 +150,60 @@ s.getType = function(selector) {
   else
     // If none of the above match, invalid or multiple selectors have been passed in.
     throw new Error("s.getType should be passed 1 valid selector, instead was passed: " + selector);
+}
+
+/* This function takes an individual attribute selector and returns an object containing
+ * relevant information about it.
+ * 
+ *   [ns|att*="val"]
+ * 
+ *   -> {
+ *     namespace: "ns",
+ *     name: "att",
+ *     symbol: "*=",
+ *     value: "val"
+ *   }
+ * 
+ * ------
+ * @(attributeSelector): An individual CSS attribute selector STRING (e.g. [att|=val]).
+ */
+s.getAttributeProperties = function(attributeSelector) {
+  if (!attributeSelector || typeof attributeSelector !== "string")
+    return false;
+    
+  if (s.getType(attributeSelector) !== "attribute")
+    throw new Error("s.getAttributeProperties should be passed 1 valid attribute selector, instead was passed " + attributeSelector);
+    
+  var
+    namespaceAndName,
+    r = {
+      namespace: null,
+      name: null,
+      symbol: null,
+      value: null
+    }
+  ;
+  
+  // Extract the namespace and name.
+  namespaceAndName = s._getNamespaceAndNameFromAttributeSelector(attributeSelector);
+  
+  // If there is a namespace, split the properties.
+  if (namespaceAndName.indexOf("|") > -1) {
+    var o = s._splitNamespaceAndName(namespaceAndName);
+    r.namespace = o.namespace;
+    r.name = o.name;
+  }
+  // Otherwise the name is this value.
+  else
+    r.name = namespaceAndName;
+    
+  // Extract the symbol.
+  r.symbol = s._getSymbolFromAttributeSelector(attributeSelector);
+  
+  // Extract the value.
+  r.value = s._getValueFromAttributeSelector(attributeSelector);
+  
+  return r;
 };
 
 /* Source: src/helper.js
@@ -568,6 +622,108 @@ s._selector = s._simple_selector_sequence + "(" + s._combinator + s._simple_sele
  */
 s._selectors_group = s._selector + "(" + s._COMMA + "\\s*" + s._selector + ")*";;
 
+/* Source: src/namespaces.js
+ * -------------------------------------------------------------------------------------/* This file offers helper functions for parsing namespaces in the type, universal and
+ * attribute selectors.
+ */
+
+/* This function splits the namespace and name from e.g. "foo|bar" into an object.
+ * ------
+ * @{namespaceAndName}: A STRING containing a namespace and name.
+ */
+s._splitNamespaceAndName = function(namespaceAndName) {  
+  if (!namespaceAndName || typeof namespaceAndName !== "string")
+    return false;
+    
+  var r = {
+    namespace: null,
+    name: null
+  };
+  
+  r.name = namespaceAndName.replace(
+    new RegExp("^" + s._namespace_prefix), function(match) {
+      r.namespace = match.substr(0, match.length - 1);
+      return '';
+    }
+  );
+  
+  return r;
+};
+
+/* Source: src/attributes.js
+ * -------------------------------------------------------------------------------------/* This file offers helper functions for parsing attribute selectors, allowing for
+ * differentiation between the namespace (1), name (2), symbol (3) and value (4):
+ * 
+ *   [ns|att = val]
+ *    (1)(2)(3)(4)
+ * 
+ * Note: Attribute names can include namespaces, these can be extracted 
+ */
+
+/* This function gets the namespace (1) and name (2) from an attribute selector by
+ * replacing all of the irrelevant data.
+ * ------
+ * @{attributeSelector}: An individual attribute selector STRING (e.g. [att=val]).
+ */
+s._getNamespaceAndNameFromAttributeSelector = function(attributeSelector) {
+  if (!attributeSelector || typeof attributeSelector !== "string")
+    return false;
+    
+  return attributeSelector.replace(
+    new RegExp(
+        "(^\\[\\s*|\\s*"
+      + "((" + s._PREFIXMATCH + "|"
+      + s._SUFFIXMATCH + "|"
+      + s._SUBSTRINGMATCH + "|"
+      + "=|"
+      + s._INCLUDES + "|"
+      + s._DASHMATCH + ")\\s*(" + s._ident + "|" + s._string + ")\\s*"
+      + ")?\\]$)", "g"
+    ), ''
+  );
+}
+
+/* This function gets the symbol (3) from an attribute selector by replacing all of the
+ * irrelevant data.
+ * ------
+ * @{attributeSelector}: An individual attribute selector STRING (e.g. [att=val]).
+ */
+s._getSymbolFromAttributeSelector = function(attributeSelector) {
+  if (!attributeSelector || typeof attributeSelector !== "string")
+    return false;
+  
+  return attributeSelector.replace(
+    new RegExp(
+        "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*|"
+      + "\\s*(" + s._ident + "|" + s._string + ")\\s*|"
+      + "\\]$)", "g"
+    ), ''
+  );
+}
+
+/* This function gets the value (4) from an attribute selector by replacing all of the
+ * irrelevant data.
+ * ------
+ * @{attributeSelector}: An individual attribute selector STRING (e.g. [att=val]).
+ */
+s._getValueFromAttributeSelector = function(attributeSelector) {
+  if (!attributeSelector || typeof attributeSelector !== "string")
+    return false;
+    
+  return attributeSelector.replace(
+    new RegExp(
+        "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*"
+      + "(" + s._PREFIXMATCH + "|"
+      + s._SUFFIXMATCH + "|"
+      + s._SUBSTRINGMATCH + "|"
+      + "=|"
+      + s._INCLUDES + "|"
+      + s._DASHMATCH + ")\\s*[\"']?|"
+      + "[\"']?\\s*\\]$)", "g"
+    ), ''
+  );
+};
+
 /* Source: src/pseudo.js
  * -------------------------------------------------------------------------------------
  * This file provides helper functions and expressions related to pseudo-classes and
@@ -703,6 +859,8 @@ s._isValidHtml = function(type, selector) {
  * 
  * It also allows custom elements in the format defined by the Custom Elements Working 
  * Draft (https://www.w3.org/TR/custom-elements).
+ * ------
+ * @{selector}: An individual CSS selector STRING (e.g. foo or .bar).
  */
 s._isValidHtmlElement = function(selector) {
   if (!selector || typeof selector !== "string")
@@ -772,11 +930,98 @@ s._isValidHtmlElement = function(selector) {
    * 
    * https://www.w3.org/TR/custom-elements/#h-concepts
    * 
-   * Note: The above values are all caught in the above element checks.
+   * Note: The above values are all caught in the previous element checks.
    */
-  return new RegExp("^([a-z]+-)+[a-z]+$").test(selector);
+  return /^([a-z]+-)+[a-z]+$/.test(selector);
 }
 
 s._isValidHtmlAttribute = function(selector) {
-  return true;
+  var
+    htmlAttributes = [
+      'accept', 'accept-charset', 'accesskey', 'action', 'align', 'alt', 'async',
+      'autocomplete', 'autofocus', 'autoplay', 'autosave', 'bgcolor', 'border',
+      'buffered', 'challenge', 'charset', 'checked', 'cite', 'class', 'code',
+      'codebase', 'color', 'cols', 'colspan', 'content', 'contenteditable',
+      'contextmenu', 'controls', 'coords', 'data', 'datetime', 'default', 'defer',
+      'dir', 'dirname', 'disabled', 'download', 'draggable', 'dropzone', 'enctype',
+      'for', 'form', 'formaction', 'headers', 'height', 'hidden', 'high', 'href',
+      'hreflang', 'http-equiv', 'icon', 'id', 'ismap', 'itemprop', 'keytype', 'kind',
+      'label', 'lang', 'language', 'list', 'loop', 'low', 'manifest', 'max',
+      'maxlength', 'media', 'method', 'min', 'multiple', 'muted', 'name', 'novalidate',
+      'open', 'optimum', 'pattern', 'ping', 'placeholder', 'poster', 'preload',
+      'radiogroup', 'readonly', 'rel', 'required', 'reversed', 'rows', 'rowspan',
+      'sandbox', 'scope', 'scoped', 'seamless', 'selected', 'shape', 'size', 'sizes',
+      'span', 'spellcheck', 'src', 'srcdoc', 'srclang', 'srcset', 'start', 'step',
+      'style', 'summary', 'tabindex', 'target', 'title', 'type', 'usemap', 'value',
+      'width', 'wrap'
+    ],
+    svgAttributes = [
+      'accent-height', 'accumulate', 'additive', 'alignment-baseline', 'allowReorder',
+      'alphabetic', 'amplitude', 'arabic-form', 'ascent', 'attributeName',
+      'attributeType', 'autoReverse', 'azimuth', 'baseFrequency', 'baseline-shift',
+      'baseProfile', 'bbox', 'begin', 'bias', 'by', 'calcMode', 'cap-height', 'class',
+      'clip', 'clipPathUnits', 'clip-path', 'clip-rule', 'color', 'color-interpolation',
+      'color-interpolation-filters', 'color-profile', 'color-rendering',
+      'contentScriptType', 'contentStyleType', 'cursor', 'cx', 'cy', 'd', 'decelerate',
+      'descent', 'diffuseConstant', 'direction', 'display', 'divisor',
+      'dominant-baseline', 'dur', 'dx', 'dy', 'edgeMode', 'elevation',
+      'enable-background', 'end', 'exponent', 'externalResourcesRequired', 'fill',
+      'fill-opacity', 'fill-rule', 'filter', 'filterRes', 'filterUnits', 'flood-color',
+      'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch',
+      'font-style', 'font-variant', 'font-weight', 'format', 'from', 'fx', 'fy', 'g1',
+      'g2', 'glyph-name', 'glyph-orientation-horizontal', 'glyph-orientation-vertical',
+      'glyphRef', 'gradientTransform', 'gradientUnits', 'hanging', 'height',
+      'horiz-adv-x', 'horiz-origin-x', 'id', 'ideographic', 'image-rendering', 'in',
+      'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kernelMatrix',
+      'kernelUnitLength', 'kerning', 'keyPoints', 'keySplines', 'keyTimes', 'lang',
+      'lengthAdjust', 'letter-spacing', 'lighting-color', 'limitingConeAngle', 'local',
+      'marker-end', 'marker-mid', 'marker-start', 'markerHeight', 'markerUnits',
+      'markerWidth', 'mask', 'maskContentUnits', 'maskUnits', 'mathematical', 'max',
+      'media', 'method', 'min', 'mode', 'name', 'numOctaves', 'offset', 'onabort',
+      'onactivate', 'onbegin', 'onclick', 'onend', 'onerror', 'onfocusin', 'onfocusout',
+      'onload', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
+      'onrepeat', 'onresize', 'onscroll', 'onunload', 'onzoom', 'opacity', 'operator',
+      'order', 'orient', 'orientation', 'origin', 'overflow', 'overline-position',
+      'overline-thickness', 'panose-1', 'paint-order', 'pathLength',
+      'patternContentUnits', 'patternTransform', 'patternUnits', 'pointer-events',
+      'points', 'pointsAtX', 'pointsAtY', 'pointsAtZ', 'preserveAlpha',
+      'preserveAspectRatio', 'primitiveUnits', 'r', 'radius', 'refX', 'refY',
+      'rendering-intent', 'repeatCount', 'repeatDur', 'requiredExtensions',
+      'requiredFeatures', 'restart', 'result', 'rotate', 'rx', 'ry', 'scale', 'seed',
+      'shape-rendering', 'slope', 'spacing', 'specularConstant', 'specularExponent',
+      'speed', 'spreadMethod', 'startOffset', 'stdDeviation', 'stemh', 'stemv',
+      'stitchTiles', 'stop-color', 'stop-opacity', 'strikethrough-position',
+      'strikethrough-thickness', 'string', 'stroke', 'stroke-dasharray',
+      'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit',
+      'stroke-opacity', 'stroke-width', 'style', 'surfaceScale', 'systemLanguage',
+      'tableValues', 'target', 'targetX', 'targetY', 'text-anchor', 'text-decoration',
+      'text-rendering', 'textLength', 'to', 'transform', 'type', 'u1', 'u2',
+      'underline-position', 'underline-thickness', 'unicode', 'unicode-bidi',
+      'unicode-range', 'units-per-em', 'v-alphabetic', 'v-hanging', 'v-ideographic',
+      'v-mathematical', 'values', 'version', 'vert-adv-y', 'vert-origin-x',
+      'vert-origin-y', 'viewBox', 'viewTarget', 'visibility', 'width', 'widths',
+      'word-spacing', 'writing-mode', 'x', 'x-height', 'x1', 'x2', 'xChannelSelector',
+      'xlink:actuate', 'xlink:arcrole', 'xlink:href', 'xlink:role', 'xlink:show',
+      'xlink:title', 'xlink:type', 'xml:base', 'xml:lang', 'xml:space', 'y', 'y1', 'y2',
+      'yChannelSelector', 'z', 'zoomAndPan'
+    ],
+    mathMlAttributes = [
+      'accent', 'accentunder', 'actiontype', 'align', 'alignmentscope', 'altimg',
+      'altimg-width', 'altimg-height', 'altimg-valign', 'alttext', 'bevelled',
+      'charalign', 'close', 'columnalign', 'columnlines', 'columnspacing', 'columnspan',
+      'columnwidth', 'crossout', 'decimalpoint', 'denomalign', 'depth', 'dir',
+      'display', 'displaystyle', 'edge', 'equalcolumns', 'equalrows', 'fence', 'form',
+      'frame', 'framespacing', 'groupalign', 'height', 'href', 'id', 'indentalign',
+      'indentalignfirst', 'indentalignlast', 'indentshift', 'indentshiftfirst',
+      'indentshiftlast', 'indenttarget', 'infixlinebreakstyle', 'largeop', 'length',
+      'linebreak', 'linebreakmultchar', 'linebreakstyle', 'lineleading',
+      'linethickness', 'location', 'longdivstyle', 'lspace', 'lquote', 'mathbackground',
+      'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minlabelspacing', 'minsize',
+      'movablelimits', 'notation', 'numalign', 'open', 'overflow', 'position',
+      'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote',
+      'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator',
+      'separators', 'shift', 'side', 'src', 'stackalign', 'stretchy', 'subscriptshift',
+      'supscriptshift', 'symmetric', 'voffset', 'width', 'xlink:href', 'xmlns'
+    ]
+  ;
 }

@@ -24,6 +24,8 @@ module.exports = function(grunt) {
           'src/W3Core.js',
           'src/W3Extended.js',
           'src/W3Grammar.js',
+          'src/namespaces.js',
+          'src/attributes.js',
           'src/pseudo.js',
           'src/htmlStrict.js'
         ],

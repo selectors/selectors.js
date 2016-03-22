@@ -140,3 +140,57 @@ s.getType = function(selector) {
     // If none of the above match, invalid or multiple selectors have been passed in.
     throw new Error("s.getType should be passed 1 valid selector, instead was passed: " + selector);
 }
+
+/* This function takes an individual attribute selector and returns an object containing
+ * relevant information about it.
+ * 
+ *   [ns|att*="val"]
+ * 
+ *   -> {
+ *     namespace: "ns",
+ *     name: "att",
+ *     symbol: "*=",
+ *     value: "val"
+ *   }
+ * 
+ * ------
+ * @(attributeSelector): An individual CSS attribute selector STRING (e.g. [att|=val]).
+ */
+s.getAttributeProperties = function(attributeSelector) {
+  if (!attributeSelector || typeof attributeSelector !== "string")
+    return false;
+    
+  if (s.getType(attributeSelector) !== "attribute")
+    throw new Error("s.getAttributeProperties should be passed 1 valid attribute selector, instead was passed " + attributeSelector);
+    
+  var
+    namespaceAndName,
+    r = {
+      namespace: null,
+      name: null,
+      symbol: null,
+      value: null
+    }
+  ;
+  
+  // Extract the namespace and name.
+  namespaceAndName = s._getNamespaceAndNameFromAttributeSelector(attributeSelector);
+  
+  // If there is a namespace, split the properties.
+  if (namespaceAndName.indexOf("|") > -1) {
+    var o = s._splitNamespaceAndName(namespaceAndName);
+    r.namespace = o.namespace;
+    r.name = o.name;
+  }
+  // Otherwise the name is this value.
+  else
+    r.name = namespaceAndName;
+    
+  // Extract the symbol.
+  r.symbol = s._getSymbolFromAttributeSelector(attributeSelector);
+  
+  // Extract the value.
+  r.value = s._getValueFromAttributeSelector(attributeSelector);
+  
+  return r;
+}

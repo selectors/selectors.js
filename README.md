@@ -20,69 +20,81 @@ grunt
 
 ## Documentation
 ### s.isValidSelectorsGroup( selectorsGroup )
-This function takes a string of CSS selectors (e.g. `"foo.bar"`) or a selectors group (e.g. "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
+This function takes a string of CSS selectors (like `"foo.bar"`) or a selectors group (like "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
 
 ```JavaScript
-s.isValidSelectorsGroup('a[href^="https://example.com"]::before');    // true
-s.isValidSelectorsGroup('.foo, #bar, [baz]');                         // true
-s.isValidSelectorsGroup('.foo, #bar:jazzhands');                      // false
-s.isValidSelectorsGroup('var example = "foo";');                      // false
+s.isValidSelectorsGroup('a[href^="https://example.com"]::before')    // true
+s.isValidSelectorsGroup('.foo, #bar, [baz]')                         // true
+s.isValidSelectorsGroup('.foo, #bar:jazzhands')                      // false
+s.isValidSelectorsGroup('var example = "foo";')                      // false
 ```
 
 ###s.isValidSelector( selector [, htmlStrict ] )
 This function takes an individual `selector` and validates it. This is more accurate than `s.isValidSelectorsGroup` for pseudo-classes and pseudo-elements as the selector name is validated against the various specifications.
 
 ```JavaScript
-s.isValidSelector('div');                      // true
-s.isValidSelector('foobar|*');                 // true
-s.isValidSelector(':nth-child( 2n + 1 )');     // true
-s.isValidSelector(':nth-of-type(even)');       // true
-s.isValidSelector(':lang(fr-be)');             // true
-s.isValidSelector('::first-letter');           // true
-s.isValidSelector(':-vendor-specific');        // true
-s.isValidSelector(':_alt-vendor-specific');    // true
-s.isValidSelector(':potato');                  // false
+s.isValidSelector('div')                      // true
+s.isValidSelector('foobar|*')                 // true
+s.isValidSelector(':nth-child( 2n + 1 )')     // true
+s.isValidSelector(':nth-of-type(even)')       // true
+s.isValidSelector(':lang(fr-be)')             // true
+s.isValidSelector('::first-letter')           // true
+s.isValidSelector(':-vendor-specific')        // true
+s.isValidSelector(':_alt-vendor-specific')    // true
+s.isValidSelector(':potato')                  // false
 ```
 
 It also accepts an optional `htmlStrict` Boolean value (which defaults to `false`). When `true`, it validates element types and attributes against the [HTML5](https://www.w3.org/TR/html5), [SVG1.1](http://www.w3.org/TR/SVG) and [MathML3](https://www.w3.org/TR/MathML) specifications. [WAI-ARIA](https://www.w3.org/TR/wai-aria/) attributes are also included. This flag has no special meaning when applied to anything other than types and attributes.
 
 :heavy_exclamation_mark: [**Status: TODO**] Attributes are not currently supported.
 
-This does **not** validate attribute values, only the attribute names themselves.
+This does not validate attribute values, only the attribute names themselves.
 
 ```JavaScript
-s.isValidSelector('div', true);              // true - valid HTML5 element
-s.isValidSelector('rect', true);             // true - valid SVG1.1 element
-s.isValidSelector('munderover', true);       // true - valid MathML3 element
-s.isValidSelector('potato', true);           // false
+s.isValidSelector('div', true)              // true - valid HTML5 element
+s.isValidSelector('polygon', true)          // true - valid SVG1.1 element
+s.isValidSelector('munderover', true)       // true - valid MathML3 element
+s.isValidSelector('potato', true)           // false
 
-s.isValidSelector('[checked]', true);        // true - valid HTML5 attribute
-s.isValidSelector('[clip-rule]', true);      // true - valid SVG1.1 attribute
-s.isValidSelector('[mathvariant]', true);    // true - valid MathML3 attribute
-s.isValidSelector('[aria-role]', true);      // true - valid WAI-ARIA attribute
-s.isValidSelector('[potato]', true);         // false
+s.isValidSelector('[checked]', true)        // true - valid HTML5 attribute
+s.isValidSelector('[clip-rule]', true)      // true - valid SVG1.1 attribute
+s.isValidSelector('[mathvariant]', true)    // true - valid MathML3 attribute
+s.isValidSelector('[aria-role]', true)      // true - valid WAI-ARIA attribute
+s.isValidSelector('[potato]', true)         // false
 ```
 
 ### s.quickValidation ( selectors )
-This function takes a string of CSS `selectors` (e.g. `"foo.bar"`, a selectors group (e.g. "`foo, .bar"`) or an individual selector (`[bar=baz]`) and performs fast validation by wrapping `document.querySelector`.
+This function takes a string of CSS `selectors` (like `"foo.bar"`, a selectors group (like "`foo, .bar"`) or an individual selector (`[bar=baz]`) and performs fast validation by wrapping `document.querySelector`.
 
 ```JavaScript
-s.quickValidation('foo');          // true
-s.quickValidation('[att=val]');    // true
+s.quickValidation('foo')          // true
+s.quickValidation('[att=val]')    // true
 ```
 
 It's recommended **not** to use this if you're needing accurate results. Due to it wrapping `document.querySelector`, the results given by this differ between each browser. Most browser implementations falsly invalidate namespaces (like `ns|div`) and even their own vendor-prefixed pseudo-classes (like `:-webkit-marquee`, etc...). Some also give false positives on invalid identifier names (like `#--`).
 
 ###s.getType( selector )
-This function takes an individual `selector` (e.g. `"foo"` or `".bar"`) and returns what type of selector it is.
+This function takes an individual `selector` (like `"foo"` or `".bar"`) and returns what type of selector it is.
 
 ```JavaScript
-s.getType('div');           // "type"
-s.getType('.bar');          // "class"
-s.getType('#baz');          // "id"
-s.getType('[att]');         // "attribute"
-s.getType(':foo');          // "pseudo-class"
-s.getType('::foo');         // "pseudo-element"
-s.getType(':foo(n)');       // "pseudo-class"
-s.getType(':not(.bar)');    // "negation"
+s.getType('div')           // "type"
+s.getType('.bar')          // "class"
+s.getType('#baz')          // "id"
+s.getType('[att]')         // "attribute"
+s.getType(':foo')          // "pseudo-class"
+s.getType('::foo')         // "pseudo-element"
+s.getType(':foo(n)')       // "pseudo-class"
+s.getType(':not(.bar)')    // "negation"
+```
+
+###s.getAttributeProperties( attributeSelector )
+This function takes an individual `attributeSelector` (like `"[att=val]"` or `"[ns|att*="val"]`) and returns an object containing its `namespace`, `name`, `symbol` and `value`.
+
+```JavaScript
+s.getAttributeProperties('[att="5"]') // { namespace: null, name: 'att', symbol: '=', value: '5' }
+
+s.getAttributeProperties('[ns|foo^="bar"]').namespace    // 'ns'
+s.getAttributeProperties('[ns|foo^="bar"]').name         // 'foo'
+s.getAttributeProperties('[ns|foo^="bar"]').symbol       // '^='
+s.getAttributeProperties('[ns|foo^="bar"]').value        // 'bar'
 ```
