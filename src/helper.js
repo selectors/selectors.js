@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * This file defines non-selector-specific helper functions to reduce repetition within
  * the selectors.js file.
  */

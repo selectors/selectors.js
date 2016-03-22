@@ -20,11 +20,12 @@ grunt
 
 ## Documentation
 ### s.isValidSelectorsGroup( selectorsGroup )
-This function takes a string of CSS selectors (e.g. `"foo.bar"`) or selectors group (e.g. "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
+This function takes a string of CSS selectors (e.g. `"foo.bar"`) or a selectors group (e.g. "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
 
 ```JavaScript
 s.isValidSelectorsGroup('a[href^="https://example.com"]::before');    // true
 s.isValidSelectorsGroup('.foo, #bar, [baz]');                         // true
+s.isValidSelectorsGroup('.foo, #bar:jazzhands');                      // false
 s.isValidSelectorsGroup('var example = "foo";');                      // false
 ```
 

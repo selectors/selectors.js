@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * This file defines the main object (`s`) and the core selectors.js functionality.
  * `s` is the main object used throughout selectors.js. Everything is called using
  * `s.*`. Internal properties (which shouldn't really be used directly) are prefixed
@@ -54,13 +54,13 @@ s.isValidSelector = function(selector, htmlStrict) {
   try {
     switch (s.getType(selector)) {
       case "type":
+      case "attribute":
         if (htmlStrict) {
           break;
         }
       case "universal":
       case "class":
       case "id":
-      case "attribute":
       case "negation":
         return true;
       case "pseudo-class":
@@ -111,6 +111,9 @@ s.quickValidation = function(selectors) {
  * @(selector): An individual CSS selector STRING (e.g. foo or .bar).
  */
 s.getType = function(selector) {
+  if (!selector || typeof selector !== "string")
+    throw new Error("s.getType should be passed a non-empty string value, instead was passed " + selector);
+  
   if (s._isExactMatch(s._type_selector, selector))
     return "type";
   else if (s._isExactMatch(s._universal, selector))

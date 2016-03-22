@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * W3Core incorporates the regular expressions defined and extended upon in the
  * following W3C Recommendations' sections:
  *
@@ -8,10 +8,21 @@
  * 
  * A lot of these aren't really relevant in the case of Selectors, but everything has
  * been included anyway for the sake of reusability.
+ * 
+ * Finally the selector implementations are case-insensitive:
+ * 
+ * > All Selectors syntax is case-insensitive within the ASCII range (i.e. [a-z] and
+ * > [A-Z] are equivalent), except for parts that are not under the control of
+ * > Selectors. The case sensitivity of document language element names, attribute
+ * > names, and attribute values in selectors depends on the document language. For
+ * > example, in HTML, element names are case-insensitive, but in XML, they are case-
+ * > sensitive.
+ * 
+ * https://www.w3.org/TR/selectors/#casesens
  */
 
 // h		            [0-9a-f]
-s._h = "[0-9a-f]";
+s._h = "[0-9a-fA-F]";
 
 // nonascii	        [\240-\4177777]
 s._nonascii = "(?![\\u0000-\\u0239]).*";
@@ -23,10 +34,10 @@ s._unicode = "(\\\\" + s._h + "{1,6}(\\r\\n|[ \\t\\r\\n\\f])?)";
 s._escape = "(" + s._unicode + "|\\\\[^\\r\\n\\f0-9a-f])";
 
 // nmstart		      [_a-z]|{nonascii}|{escape}
-s._nmstart = "([_a-z]|" + s._nonascii + "|" + s._escape + ")";
+s._nmstart = "([_a-zA-Z]|" + s._nonascii + "|" + s._escape + ")";
 
 // nmchar	          [_a-z0-9-]|{nonascii}|{escape}
-s._nmchar = "([_a-z0-9-]|" + s._nonascii + "|" + s._escape + ")";
+s._nmchar = "([_a-zA-Z0-9-]|" + s._nonascii + "|" + s._escape + ")";
 
 // ident		        -?{nmstart}{nmchar}*
 s._ident = "(-?" + s._nmstart + s._nmchar + "*)";
@@ -92,64 +103,64 @@ s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
 // url		          ([!#$%&*-~]|{nonascii}|{escape})*
 
 // A	            	a|\\0{0,4}(41|61)(\r\n|[ \t\r\n\f])?
-s._A = "(a|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._A = "([aA]|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // C	            	c|\\0{0,4}(43|63)(\r\n|[ \t\r\n\f])?
-s._C = "(c|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._C = "([cC]|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // D	            	d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
-s._D = "(d|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._D = "([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // E	            	e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?
-s._E = "(e|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._E = "([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // G	            	g|\\0{0,4}(47|67)(\r\n|[ \t\r\n\f])?|\\g
-s._G = "(g|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\g)";
+s._G = "([gG]|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[gG])";
 
 // H	            	h|\\0{0,4}(48|68)(\r\n|[ \t\r\n\f])?|\\h
-s._H = "(h|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\h)";
+s._H = "([hH]|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[hH])";
 
 // I	            	i|\\0{0,4}(49|69)(\r\n|[ \t\r\n\f])?|\\i
-s._I = "(i|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\i)";
+s._I = "([iI]|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[iI])";
 
 // K	            	k|\\0{0,4}(4b|6b)(\r\n|[ \t\r\n\f])?|\\k
-s._K = "(k|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\k)";
+s._K = "([kK]|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[kK])";
 
 // L                l|\\0{0,4}(4c|6c)(\r\n|[ \t\r\n\f])?|\\l
-s._L = "(l|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\l)";
+s._L = "([lL]|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[lL])";
 
 // M	            	m|\\0{0,4}(4d|6d)(\r\n|[ \t\r\n\f])?|\\m
-s._N = "(m|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\m)";
+s._N = "([mM]|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[mM])";
 
 // N	            	n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
-s._N = "(n|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\n)";
+s._N = "([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN])";
 
 // O	            	o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o
-s._O = "(o|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\o)";
+s._O = "([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO])";
 
 // P	            	p|\\0{0,4}(50|70)(\r\n|[ \t\r\n\f])?|\\p
-s._P = "(p|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\p)";
+s._P = "([pP]|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[pP])";
 
 // R	            	r|\\0{0,4}(52|72)(\r\n|[ \t\r\n\f])?|\\r
-s._R = "(r|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\r)";
+s._R = "([rR]|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[rR])";
 
 // S	            	s|\\0{0,4}(53|73)(\r\n|[ \t\r\n\f])?|\\s
-s._S = "(s|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\s)";
+s._S = "([sS]|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[sS])";
 
 // T	            	t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
-s._T = "(t|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\t)";
+s._T = "([tT]|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[tT])";
 
 // U		            u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u
-s._U = "(u|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\u)";
+s._U = "([uU]|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[uU])";
 
 // V		            v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
-s._V = "(v|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\v)";
+s._V = "([vV]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[vV])";
 
 // X		            x|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\x
-s._X = "(x|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\x)";
+s._X = "([xX]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[xX])";
 
 // Z		            z|\\0{0,4}(5a|7a)(\r\n|[ \t\r\n\f])?|\\z
-s._Z = "(z|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\z)";
+s._Z = "([zZ]|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[zZ])";
 
 // "~="             return INCLUDES;
 s._INCLUDES = "~=";

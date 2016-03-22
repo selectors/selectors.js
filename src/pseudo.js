@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * This file provides helper functions and expressions related to pseudo-classes and
  * pseudo-elements.
  */
@@ -8,8 +8,13 @@
  * 
  * 1. https://www.w3.org/TR/selectors/#pseudo-classes
  * 2. https://www.w3.org/TR/CSS21/syndata.html#vendor-keywords
+ * ------
+ * @{pseudoClass}: An individual pseudo-class selector STRING (e.g. :hover).
  */
 s._isValidCssPseudoClass = function(pseudoClass) {
+  if (!pseudoClass || typeof pseudoClass !== "string")
+    return false;
+  
   var
     simple = [
       ':root', ':first-child', ':last-child', ':first-of-type', ':last-of-type',
@@ -25,7 +30,7 @@ s._isValidCssPseudoClass = function(pseudoClass) {
   ;
   
   // If it's one of the simple pseudo-classes it's valid right away.
-  if (simple.indexOf(pseudoClass) > -1)
+  if (simple.indexOf(pseudoClass.toLowerCase()) > -1)
     return true;
     
   // Strip any brackets for the next few checks.
@@ -75,8 +80,13 @@ s._isValidCssPseudoClass = function(pseudoClass) {
  * 
  * Note: The last sentence there is an artifact from when the Level 3 document
  *       implemented a new ::selection pseudo-element. This has since been removed. 
+ * ------
+ * @{pseudoElement}: An individual pseudo-element selector STRING (e.g. ::first-line).
  */
 s._isValidCssPseudoElement = function(pseudoElement) {
+  if (!pseudoElement || typeof pseudoElement !== "string")
+    return false;
+  
   switch (pseudoElement) {
     case ":first-line":
     case ":first-letter":

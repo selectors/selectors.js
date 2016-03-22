@@ -1,5 +1,1 @@
 node_modules/
-bin/
-.grunt/
-test/coverage
-_SpecRunner.html

@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * W3Extended incorporates the regular expressions implied and defined elsewhere in the
  * documentation linked in W3Core.js. For each of these, a link to the source has been
  * provided for ease.

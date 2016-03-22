@@ -5,16 +5,16 @@ module.exports = function(grunt) {
       options: {
         separator: ';\n',
         banner: '/*!\n'
-              + ' * Selectors.js - https://github.com/JamesDonnelly/Selectors.js\n\n'
+              + ' * Selectors.js - https://github.com/selectors/selectors.js\n\n'
               + ' * Released under the MIT license\n'
-              + ' * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md\n\n'
+              + ' * https://github.com/selectors/selectors.js/blob/master/LICENSE.md\n\n'
               + ' * Last built: <%= grunt.template.today("dddd, dS mmmm yyyy; h:MM:ss TT") %>\n'
               + ' */\n\n'
               + '"use strict";',
         process: function(src, filepath) {
           return '\n/* Source: ' + filepath
               + '\n * -------------------------------------------------------------------------------------'
-              + src.replace(/^\/\* https:\/\/github.com\/JamesDonnelly\/Selectors\.js/, '');
+              + src.replace(/^\/\* https:\/\/github.com\/selectors\/selectors\.js/, '');
         },
       },
       dist: {
@@ -24,7 +24,8 @@ module.exports = function(grunt) {
           'src/W3Core.js',
           'src/W3Extended.js',
           'src/W3Grammar.js',
-          'src/pseudo.js'
+          'src/pseudo.js',
+          'src/htmlStrict.js'
         ],
         dest: 'dist/selectors.js'
       }
@@ -32,7 +33,7 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         banner: '/*! Selectors.js v<%= pkg.version %> | '
-						  + '(c) https://github.com/JamesDonnelly/Selectors.js | https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md */\n',
+						  + '(c) https://github.com/selectors/selectors.js | https://github.com/selectors/selectors.js/blob/master/LICENSE.md */\n',
       },
       dist: {
         files: {

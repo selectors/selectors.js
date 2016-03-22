@@ -8,8 +8,16 @@ describe("s.isValidSelectorsGroup( selector )", function() {
       expect(s.isValidSelectorsGroup('foo')).toEqual(true);
     });
     
+    it("Validates `FOO`", function() {
+      expect(s.isValidSelectorsGroup('FOO')).toEqual(true);
+    });
+    
     it("Validates `.bar`", function() {
       expect(s.isValidSelectorsGroup('.bar')).toEqual(true);
+    });
+    
+    it("Validates `.BAR`", function() {
+      expect(s.isValidSelectorsGroup('.BAR')).toEqual(true);
     });
     
     it("Validates `.-bar`", function() {
@@ -38,6 +46,10 @@ describe("s.isValidSelectorsGroup( selector )", function() {
     
     it("Validates `[att=val]`", function() {
       expect(s.isValidSelectorsGroup('[att=val]')).toEqual(true);
+    });
+    
+    it("Validates `[ATT=VAL]`", function() {
+      expect(s.isValidSelectorsGroup('[ATT=VAL]')).toEqual(true);
     });
     
     it("Validates `[att='val']`", function() {
@@ -88,8 +100,16 @@ describe("s.isValidSelectorsGroup( selector )", function() {
       expect(s.isValidSelectorsGroup(':foobar(odd)')).toEqual(true);
     });
     
+    it("Validates `:FOOBAR(ODD)`", function() {
+      expect(s.isValidSelectorsGroup(':FOOBAR(ODD)')).toEqual(true);
+    });
+    
     it("Validates `::foobar`", function() {
       expect(s.isValidSelectorsGroup('::foobar')).toEqual(true);
+    });
+    
+    it("Validates `::FOOBAR`", function() {
+      expect(s.isValidSelectorsGroup('::FOOBAR')).toEqual(true);
     });
   });
   

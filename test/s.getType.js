@@ -4,6 +4,10 @@ describe("s.getType( selector )", function() {
       expect(s.getType('foo')).toEqual('type');
     });
     
+    it("Returns `type` from `FOO`", function() {
+      expect(s.getType('FOO')).toEqual('type');
+    });
+    
     it("Returns `type` from `ns|foo`", function() {
       expect(s.getType('ns|foo')).toEqual('type');
     });

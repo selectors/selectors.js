@@ -4,6 +4,10 @@ describe("s._isValidCssPseudoClass( pseudoClass )", function() {
       expect(s._isValidCssPseudoClass(':hover')).toEqual(true);
     });
     
+    it("Validates `:HOVER`", function() {
+      expect(s._isValidCssPseudoClass(':HOVER')).toEqual(true);
+    });
+    
     it("Validates `:nth-child(+2n)`", function() {
       expect(s._isValidCssPseudoClass(':nth-child(+2n)')).toEqual(true);
     });

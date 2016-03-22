@@ -1,4 +1,4 @@
-/* https://github.com/JamesDonnelly/Selectors.js
+/* https://github.com/selectors/selectors.js
  * W3Grammar incorporates the 'Syntax of Selectors' defined and extended upon in the
  * following W3C Recommendations' sections:
  *

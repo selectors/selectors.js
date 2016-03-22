@@ -1,10 +1,10 @@
 /*!
- * Selectors.js - https://github.com/JamesDonnelly/Selectors.js
+ * Selectors.js - https://github.com/selectors/selectors.js
 
  * Released under the MIT license
- * https://github.com/JamesDonnelly/Selectors.js/blob/master/LICENSE.md
+ * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 22nd March 2016; 9:19:38 AM
+ * Last built: Tuesday, 22nd March 2016; 11:59:02 AM
  */
 
 "use strict";
@@ -65,13 +65,13 @@ s.isValidSelector = function(selector, htmlStrict) {
   try {
     switch (s.getType(selector)) {
       case "type":
+      case "attribute":
         if (htmlStrict) {
           break;
         }
       case "universal":
       case "class":
       case "id":
-      case "attribute":
       case "negation":
         return true;
       case "pseudo-class":
@@ -122,6 +122,9 @@ s.quickValidation = function(selectors) {
  * @(selector): An individual CSS selector STRING (e.g. foo or .bar).
  */
 s.getType = function(selector) {
+  if (!selector || typeof selector !== "string")
+    throw new Error("s.getType should be passed a non-empty string value, instead was passed " + selector);
+  
   if (s._isExactMatch(s._type_selector, selector))
     return "type";
   else if (s._isExactMatch(s._universal, selector))
@@ -180,10 +183,21 @@ s._isExactMatch = function(pattern, testCase) {
  * 
  * A lot of these aren't really relevant in the case of Selectors, but everything has
  * been included anyway for the sake of reusability.
+ * 
+ * Finally the selector implementations are case-insensitive:
+ * 
+ * > All Selectors syntax is case-insensitive within the ASCII range (i.e. [a-z] and
+ * > [A-Z] are equivalent), except for parts that are not under the control of
+ * > Selectors. The case sensitivity of document language element names, attribute
+ * > names, and attribute values in selectors depends on the document language. For
+ * > example, in HTML, element names are case-insensitive, but in XML, they are case-
+ * > sensitive.
+ * 
+ * https://www.w3.org/TR/selectors/#casesens
  */
 
 // h		            [0-9a-f]
-s._h = "[0-9a-f]";
+s._h = "[0-9a-fA-F]";
 
 // nonascii	        [\240-\4177777]
 s._nonascii = "(?![\\u0000-\\u0239]).*";
@@ -195,10 +209,10 @@ s._unicode = "(\\\\" + s._h + "{1,6}(\\r\\n|[ \\t\\r\\n\\f])?)";
 s._escape = "(" + s._unicode + "|\\\\[^\\r\\n\\f0-9a-f])";
 
 // nmstart		      [_a-z]|{nonascii}|{escape}
-s._nmstart = "([_a-z]|" + s._nonascii + "|" + s._escape + ")";
+s._nmstart = "([_a-zA-Z]|" + s._nonascii + "|" + s._escape + ")";
 
 // nmchar	          [_a-z0-9-]|{nonascii}|{escape}
-s._nmchar = "([_a-z0-9-]|" + s._nonascii + "|" + s._escape + ")";
+s._nmchar = "([_a-zA-Z0-9-]|" + s._nonascii + "|" + s._escape + ")";
 
 // ident		        -?{nmstart}{nmchar}*
 s._ident = "(-?" + s._nmstart + s._nmchar + "*)";
@@ -264,64 +278,64 @@ s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
 // url		          ([!#$%&*-~]|{nonascii}|{escape})*
 
 // A	            	a|\\0{0,4}(41|61)(\r\n|[ \t\r\n\f])?
-s._A = "(a|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._A = "([aA]|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // C	            	c|\\0{0,4}(43|63)(\r\n|[ \t\r\n\f])?
-s._C = "(c|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._C = "([cC]|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // D	            	d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
-s._D = "(d|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._D = "([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // E	            	e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?
-s._E = "(e|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._E = "([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // G	            	g|\\0{0,4}(47|67)(\r\n|[ \t\r\n\f])?|\\g
-s._G = "(g|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\g)";
+s._G = "([gG]|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[gG])";
 
 // H	            	h|\\0{0,4}(48|68)(\r\n|[ \t\r\n\f])?|\\h
-s._H = "(h|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\h)";
+s._H = "([hH]|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[hH])";
 
 // I	            	i|\\0{0,4}(49|69)(\r\n|[ \t\r\n\f])?|\\i
-s._I = "(i|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\i)";
+s._I = "([iI]|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[iI])";
 
 // K	            	k|\\0{0,4}(4b|6b)(\r\n|[ \t\r\n\f])?|\\k
-s._K = "(k|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\k)";
+s._K = "([kK]|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[kK])";
 
 // L                l|\\0{0,4}(4c|6c)(\r\n|[ \t\r\n\f])?|\\l
-s._L = "(l|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\l)";
+s._L = "([lL]|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[lL])";
 
 // M	            	m|\\0{0,4}(4d|6d)(\r\n|[ \t\r\n\f])?|\\m
-s._N = "(m|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\m)";
+s._N = "([mM]|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[mM])";
 
 // N	            	n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
-s._N = "(n|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\n)";
+s._N = "([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN])";
 
 // O	            	o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o
-s._O = "(o|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\o)";
+s._O = "([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO])";
 
 // P	            	p|\\0{0,4}(50|70)(\r\n|[ \t\r\n\f])?|\\p
-s._P = "(p|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\p)";
+s._P = "([pP]|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[pP])";
 
 // R	            	r|\\0{0,4}(52|72)(\r\n|[ \t\r\n\f])?|\\r
-s._R = "(r|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\r)";
+s._R = "([rR]|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[rR])";
 
 // S	            	s|\\0{0,4}(53|73)(\r\n|[ \t\r\n\f])?|\\s
-s._S = "(s|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\s)";
+s._S = "([sS]|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[sS])";
 
 // T	            	t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
-s._T = "(t|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\t)";
+s._T = "([tT]|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[tT])";
 
 // U		            u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u
-s._U = "(u|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\u)";
+s._U = "([uU]|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[uU])";
 
 // V		            v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
-s._V = "(v|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\v)";
+s._V = "([vV]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[vV])";
 
 // X		            x|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\x
-s._X = "(x|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\x)";
+s._X = "([xX]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[xX])";
 
 // Z		            z|\\0{0,4}(5a|7a)(\r\n|[ \t\r\n\f])?|\\z
-s._Z = "(z|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\z)";
+s._Z = "([zZ]|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[zZ])";
 
 // "~="             return INCLUDES;
 s._INCLUDES = "~=";
@@ -565,8 +579,13 @@ s._selectors_group = s._selector + "(" + s._COMMA + "\\s*" + s._selector + ")*";
  * 
  * 1. https://www.w3.org/TR/selectors/#pseudo-classes
  * 2. https://www.w3.org/TR/CSS21/syndata.html#vendor-keywords
+ * ------
+ * @{pseudoClass}: An individual pseudo-class selector STRING (e.g. :hover).
  */
 s._isValidCssPseudoClass = function(pseudoClass) {
+  if (!pseudoClass || typeof pseudoClass !== "string")
+    return false;
+  
   var
     simple = [
       ':root', ':first-child', ':last-child', ':first-of-type', ':last-of-type',
@@ -582,7 +601,7 @@ s._isValidCssPseudoClass = function(pseudoClass) {
   ;
   
   // If it's one of the simple pseudo-classes it's valid right away.
-  if (simple.indexOf(pseudoClass) > -1)
+  if (simple.indexOf(pseudoClass.toLowerCase()) > -1)
     return true;
     
   // Strip any brackets for the next few checks.
@@ -632,8 +651,13 @@ s._isValidCssPseudoClass = function(pseudoClass) {
  * 
  * Note: The last sentence there is an artifact from when the Level 3 document
  *       implemented a new ::selection pseudo-element. This has since been removed. 
+ * ------
+ * @{pseudoElement}: An individual pseudo-element selector STRING (e.g. ::first-line).
  */
 s._isValidCssPseudoElement = function(pseudoElement) {
+  if (!pseudoElement || typeof pseudoElement !== "string")
+    return false;
+  
   switch (pseudoElement) {
     case ":first-line":
     case ":first-letter":
@@ -647,4 +671,112 @@ s._isValidCssPseudoElement = function(pseudoElement) {
     default:
       return false;
   }
+};
+
+/* Source: src/htmlStrict.js
+ * -------------------------------------------------------------------------------------
+ * This file offers HTML5 validation, primarily on element names and attribute names and
+ * their values.
+ */
+
+/* This is the main function in this file. It determines which function to return based
+ * on the specified type input.
+ * ------
+ * @{type}: The STRING type of selector (e.g. "type" or "attribute").
+ * @{selector}: An individual CSS selector STRING (e.g. foo or .bar).
+ */
+s._isValidHtml = function(type, selector) {  
+  if (type === "type")
+    return s._isValidHtmlElement(selector);
+  if (type === "attribute")
+    return s.isValidHtmlAttribute(selector);
+}
+
+/* This function validates a CSS type selector to ensure it has a corresponding element
+ * within the HTML5 specification. This includes everything which isn't part of the
+ * document's Obsolete Features section (https://www.w3.org/TR/html5/obsolete.html).
+ * 
+ * It also includes SVG elements defined in the Scalable Vector Graphics (SVG) 1.1
+ * (Second Edition) (https://www.w3.org/TR/SVG11) and the MathML elements defined in the
+ * Mathematical Markup Language (MathML) Version 3.0 2nd Edition
+ * (https://www.w3.org/TR/MathML).
+ * 
+ * It also allows custom elements in the format defined by the Custom Elements Working 
+ * Draft (https://www.w3.org/TR/custom-elements).
+ */
+s._isValidHtmlElement = function(selector) {
+  if (!selector || typeof selector !== "string")
+    return false;
+  
+  var
+    htmlElements = [
+      'a', 'abbr', 'address', 'area', 'article', 'aside', 'audio', 'b', 'base', 'bdi',
+      'bdo', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code',
+      'col', 'colgroup', 'command', 'content', 'data', 'datalist', 'dd', 'del',
+      'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'element', 'em', 'embed',
+      'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5',
+      'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'image', 'img', 'input',
+      'ins', 'kbd', 'keygen', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark',
+      'menu', 'menuitem', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup',
+      'option', 'output', 'p', 'param', 'picture', 'pre', 'progress', 'q', 'rp', 'rt',
+      'rtc', 'ruby', 's', 'samp', 'script', 'section', 'select', 'shadow', 'small',
+      'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody',
+      'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr',
+      'track', 'u', 'ul', 'var', 'video', 'wbr'
+    ],
+    svgElements = [
+      "a", "altglyph", "altglyphdef", "altglyphitem", "animate", "animatecolor",
+      "animatemotion", "animatetransform", "circle", "clippath", "color-profile",
+      "cursor", "defs", "desc", "ellipse", "feblend", "fecolormatrix",
+      "fecomponenttransfer", "fecomposite", "feconvolvematrix", "fediffuselighting",
+      "fedisplacementmap", "fedistantlight", "feflood", "fefunca", "fefuncb", "fefuncg",
+      "fefuncr", "fegaussianblur", "feimage", "femerge", "femergenode", "femorphology",
+      "feoffset", "fepointlight", "fespecularlighting", "fespotlight", "fetile",
+      "feturbulence", "filter", "font", "font-face", "font-face-format",
+      "font-face-name", "font-face-src", "font-face-uri", "foreignobject", "g", "glyph",
+      "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask",
+      "metadata", "missing-glyph", "mpath", "path", "pattern", "polygon", "polyline",
+      "radialgradient", "rect", "script", "set", "stop", "style", "svg", "switch",
+      "symbol", "text", "textpath", "title", "tref", "tspan", "use", "view", "vkern"
+    ],
+    mathMlElements = [
+      'annotation', 'annotation-xml', 'maction', 'math', 'menclose', 'merror',
+      'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo',
+      'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt',
+      'mstyle', 'msub', 'msubsup', 'msup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder',
+      'munderover', 'semantics'
+    ]
+  ;
+  
+  // If the selector is contained within any of the above arrays, it's valid.
+  if (htmlElements.indexOf(selector.toLowerCase()) > -1
+    || svgElements.indexOf(selector.toLowerCase()) > -1
+    || mathMlElements.indexOf(selector.toLowerCase()) > -1)
+    return true;
+    
+  /* If it's not contained in the array above, it might be a custom element.
+   *
+   * > The custom element type identifies a custom element interface and is a sequence
+   * > of characters that must match the NCName production, must contain a U+002D
+   * > HYPHEN-MINUS character, and must not contain any uppercase ASCII letters.
+   * > The custom element type must not be one of the following values:
+   * > 
+   * > - annotation-xml
+   * > - color-profile
+   * > - font-face
+   * > - font-face-src
+   * > - font-face-uri
+   * > - font-face-format
+   * > - font-face-name
+   * > - missing-glyph
+   * 
+   * https://www.w3.org/TR/custom-elements/#h-concepts
+   * 
+   * Note: The above values are all caught in the above element checks.
+   */
+  return new RegExp("^([a-z]+-)+[a-z]+$").test(selector);
+}
+
+s._isValidHtmlAttribute = function(selector) {
+  return true;
 }
