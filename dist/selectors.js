@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 22nd March 2016; 3:07:04 PM
+ * Last built: Tuesday, 22nd March 2016; 4:16:54 PM
  */
 
 "use strict";
@@ -65,10 +65,11 @@ s.isValidSelector = function(selector, htmlStrict) {
   try {
     switch (s.getType(selector)) {
       case "type":
+        if (htmlStrict)
+          return s._isValidHtml("type", selector);
       case "attribute":
-        if (htmlStrict) {
-          break;
-        }
+        if (htmlStrict)
+          return s._isValidHtml("attribute", selector);
       case "universal":
       case "class":
       case "id":
@@ -1006,8 +1007,8 @@ s._isValidHtmlAttribute = function(selector) {
       'v-mathematical', 'values', 'version', 'vert-adv-y', 'vert-origin-x',
       'vert-origin-y', 'viewbox', 'viewtarget', 'visibility', 'width', 'widths',
       'word-spacing', 'writing-mode', 'x', 'x-height', 'x1', 'x2', 'xchannelselector',
-      'xlink:actuate', 'xlink:arcrole', 'xlink:href', 'xlink:role', 'xlink:show',
-      'xlink:title', 'xlink:type', 'xml:base', 'xml:lang', 'xml:space', 'y', 'y1', 'y2',
+      'xlink\\:actuate', 'xlink\\:arcrole', 'xlink\\:href', 'xlink\\:role', 'xlink\\:show',
+      'xlink\\:title', 'xlink\\:type', 'xml\:base', 'xml\:lang', 'xml\:space', 'y', 'y1', 'y2',
       'ychannelselector', 'z', 'zoomandpan'
     ],
     mathMlAttributes = [
@@ -1026,11 +1027,17 @@ s._isValidHtmlAttribute = function(selector) {
       'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote',
       'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator',
       'separators', 'shift', 'side', 'src', 'stackalign', 'stretchy', 'subscriptshift',
-      'supscriptshift', 'symmetric', 'voffset', 'width', 'xlink:href', 'xmlns'
+      'supscriptshift', 'symmetric', 'voffset', 'width', 'xlink\\:href', 'xmlns'
     ]
   ;
   
-  var properties = s.getAttributeProperties(selector);
+  // Wrapped in a try..catch to return a friendly false.
+  try {
+    var properties = s.getAttributeProperties(selector);
+  }
+  catch (e) {
+    return false;
+  }
   
   if (!properties)
     return false;

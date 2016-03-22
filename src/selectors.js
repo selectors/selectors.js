@@ -54,10 +54,11 @@ s.isValidSelector = function(selector, htmlStrict) {
   try {
     switch (s.getType(selector)) {
       case "type":
+        if (htmlStrict)
+          return s._isValidHtml("type", selector);
       case "attribute":
-        if (htmlStrict) {
-          break;
-        }
+        if (htmlStrict)
+          return s._isValidHtml("attribute", selector);
       case "universal":
       case "class":
       case "id":

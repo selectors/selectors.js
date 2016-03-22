@@ -2,7 +2,7 @@
   "name": "selectors.js",
   "version": "1.0.0",
   "description": "Matches and validates CSS selectors.",
-  "main": "index.js",
+  "main": "dist/selectors.min.js",
   "directories": {
     "test": "test"
   },
@@ -16,5 +16,12 @@
     "grunt-contrib-concat": "^1.0.0",
     "grunt-contrib-jasmine": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/selectors/selectors.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selectors/selectors.js.git"
   }
 }

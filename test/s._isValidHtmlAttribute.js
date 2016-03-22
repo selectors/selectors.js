@@ -18,8 +18,8 @@ describe("s._isValidHtmlAttribute( selector )", function() {
       expect(s._isValidHtmlAttribute('[underline-position^=foo]')).toEqual(true);
     });
     
-    it("Validates `[xlink:title]`", function() {
-      expect(s._isValidHtmlAttribute('[xlink:title]')).toEqual(true);
+    it("Validates `[xlink\\:title]`", function() {
+      expect(s._isValidHtmlAttribute('[xlink\\:title]')).toEqual(true);
     });
     
     it("Validates `[specularConstant]`", function() {
@@ -32,8 +32,8 @@ describe("s._isValidHtmlAttribute( selector )", function() {
       expect(s._isValidHtmlAttribute('[accentunder]')).toEqual(true);
     });
     
-    it("Validates `[xlink:href*=bar]`", function() {
-      expect(s._isValidHtmlAttribute('[xlink:href*=bar]')).toEqual(true);
+    it("Validates `[xlink\\:href*=bar]`", function() {
+      expect(s._isValidHtmlAttribute('[xlink\\:href*=bar]')).toEqual(true);
     });
     
     it("Validates `[SCRIPTMINSIZE]`", function() {
@@ -42,12 +42,12 @@ describe("s._isValidHtmlAttribute( selector )", function() {
   });
   
   describe("Invalid attributes", function() {
-    it("Invalidates `foo`", function() {
+    it("Invalidates `[foo]`", function() {
       expect(s._isValidHtmlAttribute('[foo]')).toEqual(false);
     });
     
-    it("Invalidates `bgcolor`", function() {
-      expect(s._isValidHtmlAttribute('[bgcolor]')).toEqual(false);
+    it("Invalidates `[xlink:href]`", function() {
+      expect(s._isValidHtmlAttribute('[xlink:href]')).toEqual(false);
     });
   });
 });

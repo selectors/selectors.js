@@ -48,6 +48,10 @@ describe("s.getType( selector )", function() {
       expect(s.getType('[att]')).toEqual('attribute');
     });
     
+    it("Returns `attribute` from `[att\\:foo]`", function() {
+      expect(s.getType('[att\\:foo]')).toEqual('attribute');
+    });
+    
     it("Returns `attribute` from `[att=val]`", function() {
       expect(s.getType('[att=val]')).toEqual('attribute');
     });

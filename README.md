@@ -1,7 +1,7 @@
 #Selectors.js
-[![Build Status](https://travis-ci.org/temp-selectors/selectors.js.svg?branch=master)](https://travis-ci.org/temp-selectors/selectors.js)
-[![Dependency Status](https://david-dm.org/temp-selectors/selectors.js.svg)](https://david-dm.org/temp-selectors/selectors.js)
-[![devDependency Status](https://david-dm.org/temp-selectors/selectors.js/dev-status.svg)](https://david-dm.org/temp-selectors/selectors.js#info=devDependencies)
+[![Build Status](https://travis-ci.org/selectors/selectors.js.svg?branch=master)](https://travis-ci.org/selectors/selectors.js)
+[![Dependency Status](https://david-dm.org/selectors/selectors.js.svg)](https://david-dm.org/selectors/selectors.js)
+[![devDependency Status](https://david-dm.org/selectors/selectors.js/dev-status.svg)](https://david-dm.org/selectors/selectors.js#info=devDependencies)
 
 Selectors.js is a CSS Selector matcher and validator initially created for use by [Selectors.io](https://selectors.io).
 
