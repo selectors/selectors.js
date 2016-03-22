@@ -104,7 +104,12 @@ s._isValidHtmlElement = function(selector) {
 }
 
 s._isValidHtmlAttribute = function(selector) {
+  if (!selector || typeof selector !== "string")
+    return false;
+  
   var
+    properties,
+    name,
     htmlAttributes = [
       'accept', 'accept-charset', 'accesskey', 'action', 'align', 'alt', 'async',
       'autocomplete', 'autofocus', 'autoplay', 'autosave', 'bgcolor', 'border',
@@ -124,54 +129,54 @@ s._isValidHtmlAttribute = function(selector) {
       'width', 'wrap'
     ],
     svgAttributes = [
-      'accent-height', 'accumulate', 'additive', 'alignment-baseline', 'allowReorder',
-      'alphabetic', 'amplitude', 'arabic-form', 'ascent', 'attributeName',
-      'attributeType', 'autoReverse', 'azimuth', 'baseFrequency', 'baseline-shift',
-      'baseProfile', 'bbox', 'begin', 'bias', 'by', 'calcMode', 'cap-height', 'class',
-      'clip', 'clipPathUnits', 'clip-path', 'clip-rule', 'color', 'color-interpolation',
+      'accent-height', 'accumulate', 'additive', 'alignment-baseline', 'allowreorder',
+      'alphabetic', 'amplitude', 'arabic-form', 'ascent', 'attributename',
+      'attributetype', 'autoreverse', 'azimuth', 'basefrequency', 'baseline-shift',
+      'baseprofile', 'bbox', 'begin', 'bias', 'by', 'calcmode', 'cap-height', 'class',
+      'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation',
       'color-interpolation-filters', 'color-profile', 'color-rendering',
-      'contentScriptType', 'contentStyleType', 'cursor', 'cx', 'cy', 'd', 'decelerate',
-      'descent', 'diffuseConstant', 'direction', 'display', 'divisor',
-      'dominant-baseline', 'dur', 'dx', 'dy', 'edgeMode', 'elevation',
-      'enable-background', 'end', 'exponent', 'externalResourcesRequired', 'fill',
-      'fill-opacity', 'fill-rule', 'filter', 'filterRes', 'filterUnits', 'flood-color',
+      'contentscripttype', 'contentstyletype', 'cursor', 'cx', 'cy', 'd', 'decelerate',
+      'descent', 'diffuseconstant','direction', 'display', 'divisor',
+      'dominant-baseline', 'dur', 'dx', 'dy', 'edgemode', 'elevation',
+      'enable-background', 'end', 'exponent', 'externalresourcesrequired', 'fill',
+      'fill-opacity', 'fill-rule', 'filter', 'filterres', 'filterunits', 'flood-color',
       'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch',
       'font-style', 'font-variant', 'font-weight', 'format', 'from', 'fx', 'fy', 'g1',
       'g2', 'glyph-name', 'glyph-orientation-horizontal', 'glyph-orientation-vertical',
-      'glyphRef', 'gradientTransform', 'gradientUnits', 'hanging', 'height',
+      'glyphref', 'gradienttransform', 'gradientunits', 'hanging', 'height',
       'horiz-adv-x', 'horiz-origin-x', 'id', 'ideographic', 'image-rendering', 'in',
-      'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kernelMatrix',
-      'kernelUnitLength', 'kerning', 'keyPoints', 'keySplines', 'keyTimes', 'lang',
-      'lengthAdjust', 'letter-spacing', 'lighting-color', 'limitingConeAngle', 'local',
-      'marker-end', 'marker-mid', 'marker-start', 'markerHeight', 'markerUnits',
-      'markerWidth', 'mask', 'maskContentUnits', 'maskUnits', 'mathematical', 'max',
-      'media', 'method', 'min', 'mode', 'name', 'numOctaves', 'offset', 'onabort',
+      'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kernelmatrix',
+      'kernelunitlength', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang',
+      'lengthadjust', 'letter-spacing', 'lighting-color', 'limitingconeangle', 'local',
+      'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits',
+      'markerwidth', 'mask', 'maskcontentunits', 'maskunits', 'mathematical', 'max',
+      'media', 'method', 'min', 'mode', 'name', 'numoctaves', 'offset', 'onabort',
       'onactivate', 'onbegin', 'onclick', 'onend', 'onerror', 'onfocusin', 'onfocusout',
       'onload', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
       'onrepeat', 'onresize', 'onscroll', 'onunload', 'onzoom', 'opacity', 'operator',
       'order', 'orient', 'orientation', 'origin', 'overflow', 'overline-position',
-      'overline-thickness', 'panose-1', 'paint-order', 'pathLength',
-      'patternContentUnits', 'patternTransform', 'patternUnits', 'pointer-events',
-      'points', 'pointsAtX', 'pointsAtY', 'pointsAtZ', 'preserveAlpha',
-      'preserveAspectRatio', 'primitiveUnits', 'r', 'radius', 'refX', 'refY',
-      'rendering-intent', 'repeatCount', 'repeatDur', 'requiredExtensions',
-      'requiredFeatures', 'restart', 'result', 'rotate', 'rx', 'ry', 'scale', 'seed',
-      'shape-rendering', 'slope', 'spacing', 'specularConstant', 'specularExponent',
-      'speed', 'spreadMethod', 'startOffset', 'stdDeviation', 'stemh', 'stemv',
-      'stitchTiles', 'stop-color', 'stop-opacity', 'strikethrough-position',
+      'overline-thickness', 'panose-1', 'paint-order', 'pathlength',
+      'patterncontentunits', 'patterntransform', 'patternunits', 'pointer-events',
+      'points', 'pointsatx', 'pointsaty', 'pointsatz', 'preservealpha',
+      'preserveaspectratio', 'primitiveunits', 'r', 'radius', 'refx', 'refy',
+      'rendering-intent', 'repeatcount', 'repeatdur', 'requiredextensions',
+      'requiredfeatures', 'restart', 'result', 'rotate', 'rx', 'ry', 'scale', 'seed',
+      'shape-rendering', 'slope', 'spacing', 'specularconstant', 'specularexponent',
+      'speed', 'spreadmethod', 'startoffset', 'stddeviation', 'stemh', 'stemv',
+      'stitchtiles', 'stop-color', 'stop-opacity', 'strikethrough-position',
       'strikethrough-thickness', 'string', 'stroke', 'stroke-dasharray',
       'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit',
-      'stroke-opacity', 'stroke-width', 'style', 'surfaceScale', 'systemLanguage',
-      'tableValues', 'target', 'targetX', 'targetY', 'text-anchor', 'text-decoration',
-      'text-rendering', 'textLength', 'to', 'transform', 'type', 'u1', 'u2',
+      'stroke-opacity', 'stroke-width', 'style', 'surfacescale', 'systemlanguage',
+      'tablevalues', 'target', 'targetx', 'targety', 'text-anchor', 'text-decoration',
+      'text-rendering', 'textlength', 'to', 'transform', 'type', 'u1', 'u2',
       'underline-position', 'underline-thickness', 'unicode', 'unicode-bidi',
       'unicode-range', 'units-per-em', 'v-alphabetic', 'v-hanging', 'v-ideographic',
       'v-mathematical', 'values', 'version', 'vert-adv-y', 'vert-origin-x',
-      'vert-origin-y', 'viewBox', 'viewTarget', 'visibility', 'width', 'widths',
-      'word-spacing', 'writing-mode', 'x', 'x-height', 'x1', 'x2', 'xChannelSelector',
+      'vert-origin-y', 'viewbox', 'viewtarget', 'visibility', 'width', 'widths',
+      'word-spacing', 'writing-mode', 'x', 'x-height', 'x1', 'x2', 'xchannelselector',
       'xlink:actuate', 'xlink:arcrole', 'xlink:href', 'xlink:role', 'xlink:show',
       'xlink:title', 'xlink:type', 'xml:base', 'xml:lang', 'xml:space', 'y', 'y1', 'y2',
-      'yChannelSelector', 'z', 'zoomAndPan'
+      'ychannelselector', 'z', 'zoomandpan'
     ],
     mathMlAttributes = [
       'accent', 'accentunder', 'actiontype', 'align', 'alignmentscope', 'altimg',
@@ -192,4 +197,20 @@ s._isValidHtmlAttribute = function(selector) {
       'supscriptshift', 'symmetric', 'voffset', 'width', 'xlink:href', 'xmlns'
     ]
   ;
+  
+  var properties = s.getAttributeProperties(selector);
+  
+  if (!properties)
+    return false;
+    
+  name = properties.name;
+  
+  // If the attribute is contained within any of the above arrays, it's valid.
+  if (htmlAttributes.indexOf(name.toLowerCase()) > -1
+    || svgAttributes.indexOf(name.toLowerCase()) > -1
+    || mathMlAttributes.indexOf(name.toLowerCase()) > -1)
+    return true;
+    
+  // The only exception is HTML's data-* attribute.
+  return name.length > 5 && name.toLowerCase().substr(0,5) === "data-";
 }

@@ -45,8 +45,6 @@ s.isValidSelector(':potato')                  // false
 
 It also accepts an optional `htmlStrict` Boolean value (which defaults to `false`). When `true`, it validates element types and attributes against the [HTML5](https://www.w3.org/TR/html5), [SVG1.1](http://www.w3.org/TR/SVG) and [MathML3](https://www.w3.org/TR/MathML) specifications. [WAI-ARIA](https://www.w3.org/TR/wai-aria/) attributes are also included. This flag has no special meaning when applied to anything other than types and attributes.
 
-:heavy_exclamation_mark: [**Status: TODO**] Attributes are not currently supported.
-
 This does not validate attribute values, only the attribute names themselves.
 
 ```JavaScript
