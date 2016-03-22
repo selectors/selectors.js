@@ -1,6 +1,5 @@
-#Selectors.js
+#![Selectors.io Logo](http://i.imgur.com/W2LXmIh.png) Selectors.js
 [![Build Status](https://travis-ci.org/temp-selectors/selectors.js.svg?branch=master)](https://travis-ci.org/temp-selectors/selectors.js)
-[![Coverage Status](https://coveralls.io/repos/github/JamesDonnelly/selectors.js/badge.svg?branch=master)](https://coveralls.io/github/JamesDonnelly/selectors.js?branch=master)
 [![Dependency Status](https://david-dm.org/temp-selectors/selectors.js.svg)](https://david-dm.org/temp-selectors/selectors.js)
 [![devDependency Status](https://david-dm.org/temp-selectors/selectors.js/dev-status.svg)](https://david-dm.org/temp-selectors/selectors.js#info=devDependencies)
 
