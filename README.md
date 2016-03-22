@@ -1,4 +1,4 @@
-#![Selectors.io Logo](http://i.imgur.com/W2LXmIh.png) Selectors.js
+#Selectors.js
 [![Build Status](https://travis-ci.org/temp-selectors/selectors.js.svg?branch=master)](https://travis-ci.org/temp-selectors/selectors.js)
 [![Dependency Status](https://david-dm.org/temp-selectors/selectors.js.svg)](https://david-dm.org/temp-selectors/selectors.js)
 [![devDependency Status](https://david-dm.org/temp-selectors/selectors.js/dev-status.svg)](https://david-dm.org/temp-selectors/selectors.js#info=devDependencies)
@@ -90,7 +90,7 @@ s.getType(':not(.bar)')    // "negation"
 This function takes an individual `attributeSelector` (like `"[att=val]"` or `"[ns|att*="val"]`) and returns an object containing its `namespace`, `name`, `symbol` and `value`.
 
 ```JavaScript
-s.getAttributeProperties('[att="5"]') // { namespace: null, name: 'att', symbol: '=', value: '5' }
+s.getAttributeProperties('[att="5"]')    // { namespace: null, name: 'att', symbol: '=', value: '5' }
 
 s.getAttributeProperties('[ns|foo^="bar"]').namespace    // 'ns'
 s.getAttributeProperties('[ns|foo^="bar"]').name         // 'foo'
