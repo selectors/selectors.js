@@ -101,3 +101,66 @@ s._isValidCssPseudoElement = function(pseudoElement) {
       return false;
   }
 }
+
+/* The below functions extract the various properties from pseudo-class and pseudo-
+ * element selectors, allowing for differentiation between the vendor-prefix (1), the
+ * name (2) and the arguments (3).
+ * 
+ *   :-foo-bar(baz)
+ *     (1) (2) (3)
+ */
+
+/* This function gets the vendor-prefix (1) from the pseudo-class selector by replacing
+ * all of the irrelevant data.
+ * ------
+ * @{pseudoClass}: An individual pseudo-class selector STRING (e.g. :nth-child(2n)).
+ */
+s._getVendorPrefixFromPseudoClass = function(pseudoClass) {
+  if (!pseudoClass || typeof pseudoClass !== "string")
+    return false;
+  
+  // Return null if it's a pseudo-element or it has no vendor-prefix.
+  if (s._isValidCssPseudoElement(pseudoClass)
+    || !s._isExactMatch(s._vendor_prefixed_pseudo, pseudoClass))
+    return null;
+    
+  // Split the selector on any nmchar followed by a hyphen.
+  var split = pseudoClass.split(new RegExp(s._nmchar + '-'));
+  
+  return split[0].substr(1, split[0].length) + split[1] + '-';
+}
+
+/* This function gets the name (2) from the pseudo-class or pseudo-element selector by 
+ * replacing all of the irrelevant data.
+ * ------
+ * @{pseudoSelector}: An individual pseudo-class or pseudo-element selector STRING (e.g.
+ *                    :nth-child(2n) or ::before).
+ */
+s._getNameFromPseudoSelector = function(pseudoSelector) {
+  if (!pseudoSelector || typeof pseudoSelector !== "string")
+    return false;
+    
+  return pseudoSelector.replace(
+    new RegExp(
+        "^:[-_]" + s._nmstart + s._nmchar + "*-"
+      + "|^::?|\\(.*\\)$", "g"
+    ), ''
+  )
+}
+
+/* This function gets the arguments (3) from the pseudo-class selector by replacing all
+ * of the irrelevant data.
+ * ------
+ * @{pseudoClass}: An individual pseudo-class selector STRING (e.g. :nth-child(2n)).
+ */
+s._getArgsFromPseudoClass = function(pseudoClass) {
+  if (!pseudoClass || typeof pseudoClass !== "string")
+    return false;
+  
+  // Return null if it's a pseudo-element or it has no brackets.
+  if (s._isValidCssPseudoElement(pseudoClass)
+    || !/\)$/.test(pseudoClass))
+    return null;
+    
+  return pseudoClass.replace(/^:.*\(|\)$/g, '');
+}

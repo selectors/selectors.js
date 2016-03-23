@@ -195,3 +195,56 @@ s.getAttributeProperties = function(attributeSelector) {
   
   return r;
 }
+
+/* This function takes an individual attribute selector and returns an object containing
+ * relevant information about it.
+ * 
+ *   :-custom-foo(bar)
+ * 
+ *   -> {
+ *     vendor: "-custom-",
+ *     name: "foo",
+ *     value: "bar"
+ *   }
+ * 
+ * If the ::first-line, ::first-letter, ::before or ::after selectors are pased in, an
+ * extra `colons` property is also returned which is a record of how many colons (1 or
+ * 2) the pseudo-element was prefixed with. This is to allow implementations to warn
+ * users against the deprecated single-colon syntax.
+ * 
+ * ------
+ * @{pseudoSelector}: An individual pseudo-class or pseudo-element selector STRING (e.g.
+ *                    :nth-child(2n) or ::before).
+ */
+s.getPseudoProperties = function(pseudoSelector) {
+  if (!pseudoSelector || typeof pseudoSelector !== "string")
+    return false;
+  
+  var selectorType = s.getType(pseudoSelector);
+  if (selectorType !== "pseudo-class"
+    && selectorType !== "pseudo-element")
+    throw new Error("s.getPseudoProperties should be passed 1 valid pseudo-class or pseudo-element selector, instead was passed " + pseudoSelector);
+    
+  var     
+    // Extract the properties into the resulting r object.
+    r = {
+      vendor: s._getVendorPrefixFromPseudoClass(pseudoSelector),
+      name: s._getNameFromPseudoSelector(pseudoSelector),
+      args: s._getArgsFromPseudoClass(pseudoSelector)
+    }
+  ;
+  
+  // If it's a CSS2.1 pseudo-element, count the number of colons.
+  if (pseudoSelector === ":first-line"
+    || pseudoSelector === ":first-letter"
+    || pseudoSelector === ":before"
+    || pseudoSelector === ":after")
+    r.colons = 1;
+  else if (pseudoSelector === "::first-line"
+    || pseudoSelector === "::first-letter"
+    || pseudoSelector === "::before"
+    || pseudoSelector === "::after")
+    r.colons = 2;
+      
+  return r;
+}
