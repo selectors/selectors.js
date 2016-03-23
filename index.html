@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Selectors.js by selectors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Selectors.js</h1>
+      <h2 class="project-tagline">Detect, parse and validate CSS selectors quickly and easily.</h2>
+      <a href="https://github.com/selectors/selectors.js" class="btn">View on GitHub</a>
+      <a href="https://github.com/selectors/selectors.js/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/selectors/selectors.js/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><a href="https://travis-ci.org/selectors/selectors.js"><img src="https://travis-ci.org/selectors/selectors.js.svg?branch=master" alt="Build Status"></a>
+<a href="https://david-dm.org/selectors/selectors.js"><img src="https://david-dm.org/selectors/selectors.js.svg" alt="Dependency Status"></a>
+<a href="https://david-dm.org/selectors/selectors.js#info=devDependencies"><img src="https://david-dm.org/selectors/selectors.js/dev-status.svg" alt="devDependency Status"></a></p>
+
+<p>Selectors.js is a CSS Selector matcher and validator initially created for use by <a href="https://selectors.io">Selectors.io</a>.</p>
+
+<p>This uses <a href="http://gruntjs.com">Grunt</a> for minifying, concatenating and testing (<a href="http://jasmine.github.io/">Jasmine</a>). These are configured through <a href="https://nodejs.org/en/">Node.js</a>, so you'll also need to install that, then run the following command to install the packages:</p>
+
+<div class="highlight highlight-source-js"><pre>npm install</pre></div>
+
+<p>To compile the dist files and run the testing, install Grunt's command line interface (<code>npm install -g grunt-cli</code>), then run:</p>
+
+<div class="highlight highlight-source-js"><pre>grunt</pre></div>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
+
+<h3>
+<a id="sisvalidselectorsgroup-selectorsgroup-" class="anchor" href="#sisvalidselectorsgroup-selectorsgroup-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.isValidSelectorsGroup( selectorsGroup )</h3>
+
+<p>This function takes a string of CSS selectors (like <code>"foo.bar"</code>) or a selectors group (like "<code>foo, .bar"</code>) <code>selectorsGroup</code> and returns <code>true</code> or <code>false</code> depending on whether the entire input is valid.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">isValidSelectorsGroup</span>(<span class="pl-s"><span class="pl-pds">'</span>a[href^="https://example.com"]::before<span class="pl-pds">'</span></span>)    <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelectorsGroup</span>(<span class="pl-s"><span class="pl-pds">'</span>.foo, #bar, [baz]<span class="pl-pds">'</span></span>)                         <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelectorsGroup</span>(<span class="pl-s"><span class="pl-pds">'</span>.foo, #bar:jazzhands<span class="pl-pds">'</span></span>)                      <span class="pl-c">// false</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelectorsGroup</span>(<span class="pl-s"><span class="pl-pds">'</span>var example = "foo";<span class="pl-pds">'</span></span>)                      <span class="pl-c">// false</span></pre></div>
+
+<h3>
+<a id="sisvalidselector-selector--htmlstrict--" class="anchor" href="#sisvalidselector-selector--htmlstrict--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.isValidSelector( selector [, htmlStrict ] )</h3>
+
+<p>This function takes an individual <code>selector</code> and validates it. This is more accurate than <code>s.isValidSelectorsGroup</code> for pseudo-classes and pseudo-elements as the selector name is validated against the various specifications.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>)                      <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>foobar|*<span class="pl-pds">'</span></span>)                 <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:nth-child( 2n + 1 )<span class="pl-pds">'</span></span>)     <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:nth-of-type(even)<span class="pl-pds">'</span></span>)       <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:lang(fr-be)<span class="pl-pds">'</span></span>)             <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>::first-letter<span class="pl-pds">'</span></span>)           <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:-vendor-specific<span class="pl-pds">'</span></span>)        <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:_alt-vendor-specific<span class="pl-pds">'</span></span>)    <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>:potato<span class="pl-pds">'</span></span>)                  <span class="pl-c">// false</span></pre></div>
+
+<p>It also accepts an optional <code>htmlStrict</code> Boolean value (which defaults to <code>false</code>). When <code>true</code>, it validates element types and attributes against the <a href="https://www.w3.org/TR/html5">HTML5</a>, <a href="http://www.w3.org/TR/SVG">SVG1.1</a> and <a href="https://www.w3.org/TR/MathML">MathML3</a> specifications. <a href="https://www.w3.org/TR/wai-aria/">WAI-ARIA</a> attributes are also included. This flag has no special meaning when applied to anything other than types and attributes.</p>
+
+<p>This does not validate attribute values, only the attribute names themselves.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)              <span class="pl-c">// true - valid HTML5 element</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>polygon<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)          <span class="pl-c">// true - valid SVG1.1 element</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>munderover<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)       <span class="pl-c">// true - valid MathML3 element</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>potato<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)           <span class="pl-c">// false</span>
+
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>[checked]<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)        <span class="pl-c">// true - valid HTML5 attribute</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>[clip-rule]<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)      <span class="pl-c">// true - valid SVG1.1 attribute</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>[mathvariant]<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)    <span class="pl-c">// true - valid MathML3 attribute</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>[aria-role]<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)      <span class="pl-c">// true - valid WAI-ARIA attribute</span>
+<span class="pl-smi">s</span>.<span class="pl-en">isValidSelector</span>(<span class="pl-s"><span class="pl-pds">'</span>[potato]<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>)         <span class="pl-c">// false</span></pre></div>
+
+<h3>
+<a id="squickvalidation--selectors-" class="anchor" href="#squickvalidation--selectors-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.quickValidation ( selectors )</h3>
+
+<p>This function takes a string of CSS <code>selectors</code> (like <code>"foo.bar"</code>, a selectors group (like "<code>foo, .bar"</code>) or an individual selector (<code>[bar=baz]</code>) and performs fast validation by wrapping <code>document.querySelector</code>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">quickValidation</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>)          <span class="pl-c">// true</span>
+<span class="pl-smi">s</span>.<span class="pl-en">quickValidation</span>(<span class="pl-s"><span class="pl-pds">'</span>[att=val]<span class="pl-pds">'</span></span>)    <span class="pl-c">// true</span></pre></div>
+
+<p>It's recommended <strong>not</strong> to use this if you're needing accurate results. Due to it wrapping <code>document.querySelector</code>, the results given by this differ between each browser. Most browser implementations falsly invalidate namespaces (like <code>ns|div</code>) and even their own vendor-prefixed pseudo-classes (like <code>:-webkit-marquee</code>, etc...). Some also give false positives on invalid identifier names (like <code>#--</code>).</p>
+
+<h3>
+<a id="sgettype-selector-" class="anchor" href="#sgettype-selector-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.getType( selector )</h3>
+
+<p>This function takes an individual <code>selector</code> (like <code>"foo"</code> or <code>".bar"</code>) and returns what type of selector it is.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>)           <span class="pl-c">// "type"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>.bar<span class="pl-pds">'</span></span>)          <span class="pl-c">// "class"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>#baz<span class="pl-pds">'</span></span>)          <span class="pl-c">// "id"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>[att]<span class="pl-pds">'</span></span>)         <span class="pl-c">// "attribute"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>:foo<span class="pl-pds">'</span></span>)          <span class="pl-c">// "pseudo-class"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>::foo<span class="pl-pds">'</span></span>)         <span class="pl-c">// "pseudo-element"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>:foo(n)<span class="pl-pds">'</span></span>)       <span class="pl-c">// "pseudo-class"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>:not(.bar)<span class="pl-pds">'</span></span>)    <span class="pl-c">// "negation"</span></pre></div>
+
+<h3>
+<a id="sgetattributeproperties-attributeselector-" class="anchor" href="#sgetattributeproperties-attributeselector-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.getAttributeProperties( attributeSelector )</h3>
+
+<p>This function takes an individual <code>attributeSelector</code> (like <code>"[att=val]"</code> or <code>"[ns|att*="val"]</code>) and returns an object containing its <code>namespace</code>, <code>name</code>, <code>symbol</code> and <code>value</code>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getAttributeProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>[att="5"]<span class="pl-pds">'</span></span>)    <span class="pl-c">// { namespace: null, name: 'att', symbol: '=', value: '5' }</span>
+
+<span class="pl-smi">s</span>.<span class="pl-en">getAttributeProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>[ns|foo^="bar"]<span class="pl-pds">'</span></span>).<span class="pl-smi">namespace</span>    <span class="pl-c">// 'ns'</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getAttributeProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>[ns|foo^="bar"]<span class="pl-pds">'</span></span>).<span class="pl-c1">name</span>         <span class="pl-c">// 'foo'</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getAttributeProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>[ns|foo^="bar"]<span class="pl-pds">'</span></span>).<span class="pl-smi">symbol</span>       <span class="pl-c">// '^='</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getAttributeProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>[ns|foo^="bar"]<span class="pl-pds">'</span></span>).<span class="pl-c1">value</span>        <span class="pl-c">// 'bar'</span></pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/selectors/selectors.js">Selectors.js</a> is maintained by <a href="https://github.com/selectors">selectors</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
