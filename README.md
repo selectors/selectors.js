@@ -5,6 +5,12 @@
 
 Selectors.js is a CSS Selector parser and validator initially created for use by [Selectors.io](https://selectors.io).
 
+###In This Readme
+
+1. **[Download](#download)**
+2. **[Build and Test](#build-and-test)**
+3. **[Documentation](#documentation)**
+
 ##Download
 You only need one of the below files. For production it's recommended that you use a minified (`.min.js`) version.
 
@@ -15,7 +21,7 @@ You only need one of the below files. For production it's recommended that you u
 | **[selectors-html.js](https://raw.githubusercontent.com/selectors/selectors.js/master/dist/selectors-html.js)** | the commented and uncompressed version with htmlStrict |
 | **[selectors-html.min.js](https://raw.githubusercontent.com/selectors/selectors.js/master/dist/selectors-html,min.js)** | the uncommented and compressed version of selectors.html.js |
 
-The htmlStrict version offers extra validation methods on HTML5, SVG1.1 and MathML3 validation on Element and Attribute names. WAI-ARIA attributes names are also included in this.
+The htmlStrict version offers extra validation methods on HTML5, SVG1.1 and MathML3 Element and Attribute names. WAI-ARIA attribute names are also included in this.
 
 ##Build and Test
 This uses [Grunt](http://gruntjs.com) for minifying, concatenating and testing ([Jasmine](http://jasmine.github.io/)). These are configured through [Node.js](https://nodejs.org/en/), so you'll also need to install that, then run the following command to install the packages:
