@@ -38,7 +38,7 @@ grunt
 
 ## Documentation
 ### s.isValidSelectorsGroup( selectorsGroup )
-This function takes a string of CSS selectors (like `"foo.bar"`) or a selectors group (like "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
+This function takes a selector sequence (like `"foo.bar"`) or a selectors group (like "`foo, .bar"`) `selectorsGroup` and returns `true` or `false` depending on whether the entire input is valid.
 
 ```JavaScript
 s.isValidSelectorsGroup('a[href^="https://example.com"]::before')    // true
@@ -80,7 +80,7 @@ s.isValidSelector('[potato]', true)         // false
 ```
 
 ### s.quickValidation ( selectors )
-This function takes a string of CSS `selectors` (like `"foo.bar"`, a selectors group (like "`foo, .bar"`) or an individual selector (`[bar=baz]`) and performs fast validation by wrapping `document.querySelector`.
+This function takes a selector sequence (like `"foo.bar"`, a selectors group (like "`foo, .bar"`) or an individual selector (`[bar=baz]`) `selectors` and performs fast validation by wrapping `document.querySelector`.
 
 ```JavaScript
 s.quickValidation('foo')          // true
