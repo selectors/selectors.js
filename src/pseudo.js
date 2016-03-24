@@ -97,9 +97,10 @@ s._isValidCssPseudoElement = function(pseudoElement) {
     case "::before":
     case "::after":
       return true;
-    default:
-      return false;
   }
+  
+  // If it's not one of the above, it may be vendor-prefixed.
+  return s._isExactMatch(s._vendor_prefixed_pseudo, pseudoElement);
 }
 
 /* The below functions extract the various properties from pseudo-class and pseudo-
@@ -110,24 +111,24 @@ s._isValidCssPseudoElement = function(pseudoElement) {
  *     (1) (2) (3)
  */
 
-/* This function gets the vendor-prefix (1) from the pseudo-class selector by replacing
- * all of the irrelevant data.
+/* This function gets the vendor-prefix (1) from the pseudo-class or pseudo-element
+ * selector by replacing all of the irrelevant data.
  * ------
- * @{pseudoClass}: An individual pseudo-class selector STRING (e.g. :nth-child(2n)).
+ * @{pseudoSelector}: An individual pseudo-class or pseudo-element selector STRING (e.g.
+ *                    :nth-child(2n) or ::before).
  */
-s._getVendorPrefixFromPseudoClass = function(pseudoClass) {
-  if (!pseudoClass || typeof pseudoClass !== "string")
+s._getVendorPrefixFromPseudoSelector = function(pseudoSelector) {
+  if (!pseudoSelector || typeof pseudoSelector !== "string")
     return false;
   
-  // Return null if it's a pseudo-element or it has no vendor-prefix.
-  if (s._isValidCssPseudoElement(pseudoClass)
-    || !s._isExactMatch(s._vendor_prefixed_pseudo, pseudoClass))
+  // Return null if it has no vendor-prefix.
+  if (!s._isExactMatch(s._vendor_prefixed_pseudo, pseudoSelector))
     return null;
     
   // Split the selector on any nmchar followed by a hyphen.
-  var split = pseudoClass.split(new RegExp(s._nmchar + '-'));
+  var split = pseudoSelector.split(new RegExp(s._nmchar + '-'));
   
-  return split[0].substr(1, split[0].length) + split[1] + '-';
+  return split[0].substr((pseudoSelector.charAt(1) === ":" ? 2 : 1), split[0].length) + split[1] + '-';
 }
 
 /* This function gets the name (2) from the pseudo-class or pseudo-element selector by 
@@ -142,7 +143,7 @@ s._getNameFromPseudoSelector = function(pseudoSelector) {
     
   return pseudoSelector.replace(
     new RegExp(
-        "^:[-_]" + s._nmstart + s._nmchar + "*-"
+        "^::?[-_]" + s._nmstart + s._nmchar + "*-"
       + "|^::?|\\(.*\\)$", "g"
     ), ''
   )

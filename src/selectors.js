@@ -228,7 +228,7 @@ s.getPseudoProperties = function(pseudoSelector) {
   var     
     // Extract the properties into the resulting r object.
     r = {
-      vendor: s._getVendorPrefixFromPseudoClass(pseudoSelector),
+      vendor: s._getVendorPrefixFromPseudoSelector(pseudoSelector),
       name: s._getNameFromPseudoSelector(pseudoSelector),
       args: s._getArgsFromPseudoClass(pseudoSelector)
     }

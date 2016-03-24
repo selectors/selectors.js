@@ -43,4 +43,4 @@ s._lang = ":lang\\(" + s._ident + "\\)";
  * 
  * https://www.w3.org/TR/CSS21/syndata.html#vendor-keywords
  */
-s._vendor_prefixed_pseudo = ":[-_]" + s._nmstart + s._nmchar + "*-" + s._nmstart + s._nmchar + "*";
+s._vendor_prefixed_pseudo = "::?[-_]" + s._nmstart + s._nmchar + "*-" + s._nmstart + s._nmchar + "*";

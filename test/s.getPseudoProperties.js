@@ -16,8 +16,8 @@ describe("s.getPseudoProperties( pseudoSelector )", function() {
       expect(s.getPseudoProperties(':hover').colons).toEqual(undefined);
     });
     
-    it("Knows `:-webkit-foo` has a vendor-prefix of '-webkit-'", function() {
-      expect(s.getPseudoProperties(':-webkit-foo').vendor).toEqual("-webkit-");
+    it("Knows `:-custom-foo` has a vendor-prefix of '-custom-'", function() {
+      expect(s.getPseudoProperties(':-custom-foo').vendor).toEqual("-custom-");
     });
     
     it("Knows `:_potato-bar-baz` has a vendor-prefix of '_potato-'", function() {
@@ -42,6 +42,14 @@ describe("s.getPseudoProperties( pseudoSelector )", function() {
       expect(s.getPseudoProperties('::first-letter').vendor).toEqual(null);
     });
     
+    it("Knows `::-webkit-scrollbar` has the vendor-prefix '-webkit-'", function() {
+      expect(s.getPseudoProperties('::-webkit-scrollbar').vendor).toEqual('-webkit-');
+    });
+    
+    it("Knows `::_potato-foo` has the vendor-prefix '_potato-'", function() {
+      expect(s.getPseudoProperties('::_potato-foo').vendor).toEqual('_potato-');
+    });
+    
     it("Knows `::first-line` has no args", function() {
       expect(s.getPseudoProperties('::first-line').args).toEqual(null);
     });
@@ -52,6 +60,14 @@ describe("s.getPseudoProperties( pseudoSelector )", function() {
     
     it("Knows `:after` has 1 colon", function() {
       expect(s.getPseudoProperties(':after').colons).toEqual(1);
+    });
+    
+    it("Knows `::-custom-foo` has no colons attribute", function() {
+      expect(s.getPseudoProperties('::-custom-foo').colons).toEqual(undefined);
+    });
+    
+    it("Knows `::_potato-foo-bar` has no colons attribute", function() {
+      expect(s.getPseudoProperties('::_potato-foo-bar').colons).toEqual(undefined);
     });
   });
   
