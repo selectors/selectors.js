@@ -70,7 +70,7 @@ This does not validate attribute values, only the attribute names themselves.
 s.isValidSelector('div', true)              // true - valid HTML5 element
 s.isValidSelector('polygon', true)          // true - valid SVG1.1 element
 s.isValidSelector('munderover', true)       // true - valid MathML3 element
-s.isValidSelector('potato', true)           // false
+s.isValidSelector('water', true)            // false - water is a compound ;)
 
 s.isValidSelector('[checked]', true)        // true - valid HTML5 attribute
 s.isValidSelector('[clip-rule]', true)      // true - valid SVG1.1 attribute
@@ -89,6 +89,24 @@ s.quickValidation('[att=val]')    // true
 
 It's recommended **not** to use this if you're needing accurate results. Due to it wrapping `document.querySelector`, the results given by this differ between each browser. Most browser implementations falsly invalidate namespaces (like `ns|div`) and even their own vendor-prefixed pseudo-classes (like `:-webkit-marquee`, etc...). Some also give false positives on invalid identifier names (like `#--`).
 
+###s.getSequences( selectorsGroup )
+This function takes a selectors group (like `"foo, .bar"`) and returns an array of selector sequences.
+
+```JavaScript
+s.getSequences("foo.bar")            [ "foo.bar" ]
+s.getSequences("foo.bar, #baz")      [ "foo.bar", "#baz" ]
+s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
+```
+
+###s.getSelectors( selectorSequence )
+This function takes a selector sequence (like `"foo.bar:hover"`) `selectorSequence` and returns an array of individual selectors.
+
+```JavaScript
+s.getSequences("foo")              [ "foo" ]
+s.getSequences("foo.bar")          [ "foo", ".bar" ]
+s.getSequences("foo.bar:hover")    [ "foo", ".bar", ":hover" ]
+```
+
 ###s.getType( selector )
 This function takes an individual `selector` (like `"foo"` or `".bar"`) and returns what type of selector it is.
 
@@ -101,15 +119,6 @@ s.getType(':foo')          // "pseudo-class"
 s.getType('::foo')         // "pseudo-element"
 s.getType(':foo(n)')       // "pseudo-class"
 s.getType(':not(.bar)')    // "negation"
-```
-
-###s.getSequences( selectorsGroup )
-This function takes a selectors group (like `"foo, .bar"`) and returns an array of selector sequences.
-
-```JavaScript
-s.getSequences("foo.bar")            [ "foo.bar" ]
-s.getSequences("foo.bar, #baz")      [ "foo.bar", "#baz" ]
-s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
 ```
 
 ###s.getAttributeProperties( attributeSelector )
