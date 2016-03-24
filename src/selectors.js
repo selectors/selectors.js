@@ -16,7 +16,8 @@ var
  * pseudo-classes or pseudo-elements. It instead lumps them into one pseudo category,
  * with no name checking performed meaning ::hover(2n+1) is counted as valid with this.
  * ------
- * @{selectors}: A STRING of CSS selectors (e.g. foo.bar) or selectors group (foo, bar).
+ * @{selectorsGroup}: A selector sequence (e.g. foo.bar) or selectors group (foo, bar)
+ *                    STRING.
  */
 s.isValidSelectorsGroup = function(selectorsGroup) {
   if (typeof selectorsGroup !== "string")
@@ -140,6 +141,60 @@ s.getType = function(selector) {
   else
     // If none of the above match, invalid or multiple selectors have been passed in.
     throw new Error("s.getType should be passed 1 valid selector, instead was passed: " + selector);
+}
+
+/* This function takes a selectors group and returns an array of the selector sequences
+ * contained within it.
+ * ------
+ * @{selectorsGroup}: A selector sequence (e.g. foo.bar) or selectors group (foo, bar)
+ *                    STRING.
+ */
+s.getSequences = function(selectorsGroup) {
+  if (!selectorsGroup || typeof selectorsGroup !== "string")
+    return [];
+    
+  var
+    r = [],
+    matches = selectorsGroup.split(",")
+  ;
+  
+  matches.forEach(function(selectorSequence) {
+    r.push(selectorSequence.trim())
+  })
+  
+  return r;
+}
+
+/* This function takes a selector sequence and returns an array of the individual
+ * selectors contained within it.
+ * ------
+ * @{selectorSequence}: A selector sequence (e.g. foo.bar) STRING.
+ */
+s.getSelectors = function(selectorSequence) {
+  if (!selectorSequence || typeof selectorSequence !== "string")
+    return [];
+    
+  var
+    r = [],
+    matches = selectorSequence.replace(
+      new RegExp(
+          s._type_selector
+        + "|" + s._universal
+        + "|" + s._HASH
+        + "|" + s._class
+        + "|" + s._attrib
+        + "|::?(" + s._functional_pseudo + "|" + s._indent + ")"
+        + "|" + s._negation
+        + "|" + s._combinator, "g"
+      ), function(match) {
+        if (match)
+          r.push(match.trim());
+        return '';
+      }
+    )
+  ;
+  
+  return r;
 }
 
 /* This function takes an individual attribute selector and returns an object containing

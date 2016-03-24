@@ -103,6 +103,15 @@ s.getType(':foo(n)')       // "pseudo-class"
 s.getType(':not(.bar)')    // "negation"
 ```
 
+###s.getSequences( selectorsGroup )
+This function takes a selectors group (like `"foo, .bar"`) and returns an array of selector sequences.
+
+```JavaScript
+s.getSequences("foo.bar")            [ "foo.bar" ]
+s.getSequences("foo.bar, #baz")      [ "foo.bar", "#baz" ]
+s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
+```
+
 ###s.getAttributeProperties( attributeSelector )
 This function takes an individual `attributeSelector` (like `"[att=val]"` or `"[ns|att*="val"]`) and returns an object containing its `namespace`, `name`, `symbol` and `value`.
 
