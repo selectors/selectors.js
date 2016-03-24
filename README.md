@@ -105,5 +105,5 @@ If CSS2.1 pseudo-elements `::first-line`, `::first-letter`, `::before` or `::aft
 s.getPseudoProperties(':hover')                 // { vendor: null, name: 'hover', args: null }
 s.getPseudoProperties(':nth-child(2n + 1 )')    // { vendor: null, name: 'nth-child', args: '2n + 1 ' }
 s.getPseudoProperties('::before')               // { vendor: null, name: 'before', args: null, colons: 2 }
-s.getPseudoProperties('::-webkit-scrollbar')    // { vendor: '-webkit-, name: 'scrollbar', args: null }
+s.getPseudoProperties('::-webkit-scrollbar')    // { vendor: '-webkit-', name: 'scrollbar', args: null }
 ```
