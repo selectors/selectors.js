@@ -41,6 +41,20 @@ describe("s._isValidHtmlAttribute( selector )", function() {
     });
   });
   
+  describe("Valid WAI-ARIA attributes", function() {
+    it("Validates `[aria-valuemax]`", function() {
+      expect(s._isValidHtmlAttribute('[aria-valuemax]')).toEqual(true);
+    });
+    
+    it("Validates `[ARIA-pressed$=foo]`", function() {
+      expect(s._isValidHtmlAttribute('[ARIA-pressed$=foo]')).toEqual(true);
+    });
+    
+    it("Validates `[ARIA-MULTILINE]`", function() {
+      expect(s._isValidHtmlAttribute('[ARIA-MULTILINE]')).toEqual(true);
+    });
+  });
+  
   describe("Invalid attributes", function() {
     it("Invalidates `[foo]`", function() {
       expect(s._isValidHtmlAttribute('[foo]')).toEqual(false);

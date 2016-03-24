@@ -122,11 +122,11 @@ s._isValidHtmlAttribute = function(selector) {
       'label', 'lang', 'language', 'list', 'loop', 'low', 'manifest', 'max',
       'maxlength', 'media', 'method', 'min', 'multiple', 'muted', 'name', 'novalidate',
       'open', 'optimum', 'pattern', 'ping', 'placeholder', 'poster', 'preload',
-      'radiogroup', 'readonly', 'rel', 'required', 'reversed', 'rows', 'rowspan',
-      'sandbox', 'scope', 'scoped', 'seamless', 'selected', 'shape', 'size', 'sizes',
-      'span', 'spellcheck', 'src', 'srcdoc', 'srclang', 'srcset', 'start', 'step',
-      'style', 'summary', 'tabindex', 'target', 'title', 'type', 'usemap', 'value',
-      'width', 'wrap'
+      'radiogroup', 'readonly', 'rel', 'required', 'reversed', 'role', 'rows',
+      'rowspan', 'sandbox', 'scope', 'scoped', 'seamless', 'selected', 'shape', 'size',
+      'sizes', 'span', 'spellcheck', 'src', 'srcdoc', 'srclang', 'srcset', 'start',
+      'step', 'style', 'summary', 'tabindex', 'target', 'title', 'type', 'usemap',
+      'value', 'width', 'wrap'
     ],
     svgAttributes = [
       'accent-height', 'accumulate', 'additive', 'alignment-baseline', 'allowreorder',
@@ -195,6 +195,16 @@ s._isValidHtmlAttribute = function(selector) {
       'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator',
       'separators', 'shift', 'side', 'src', 'stackalign', 'stretchy', 'subscriptshift',
       'supscriptshift', 'symmetric', 'voffset', 'width', 'xlink\\:href', 'xmlns'
+    ],
+    waiAriaAttributes = [
+      'aria-activedescendant', 'aria-atomic', 'aria-autocomplete', 'aria-busy',
+      'aria-checked', 'aria-controls', 'aria-describedby', 'aria-disabled',
+      'aria-dropeffect', 'aria-expanded', 'aria-flowto', 'aria-grabbed',
+      'aria-haspopup', 'aria-hidden', 'aria-invalid', 'aria-label', 'aria-labelledby',
+      'aria-level', 'aria-live', 'aria-multiline', 'aria-multiselect',
+      'aria-orientation', 'aria-owns', 'aria-posinset', 'aria-pressed', 'aria-readonly',
+      'aria-relevant', 'aria-required', 'aria-selected', 'aria-setsize', 'aria-sort',
+      'aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext'
     ]
   ;
   
@@ -214,7 +224,8 @@ s._isValidHtmlAttribute = function(selector) {
   // If the attribute is contained within any of the above arrays, it's valid.
   if (htmlAttributes.indexOf(name.toLowerCase()) > -1
     || svgAttributes.indexOf(name.toLowerCase()) > -1
-    || mathMlAttributes.indexOf(name.toLowerCase()) > -1)
+    || mathMlAttributes.indexOf(name.toLowerCase()) > -1
+    || waiAriaAttributes.indexOf(name.toLowerCase()) > -1)
     return true;
     
   // The only exception is HTML's data-* attribute.

@@ -42,7 +42,7 @@ s.isValidSelector = function(selector, htmlStrict) {
   if (typeof selector !== "string")
     throw new Error("s.isValidSelector expected string value as its first argument, instead was passed: " + selectorsGroup);
   
-  var htmlStrict = htmlStrict || false;
+  var htmlStrict = typeof s._isValidHtml === "function" && htmlStrict || false;
   
   if (typeof htmlStrict !== "boolean")
     throw new Error("s.isValidSelector expected boolean value as its second argument, instead was passed: " + selectorsGroup);
