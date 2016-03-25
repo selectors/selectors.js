@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Friday, 25th March 2016; 2:59:19 PM
+ * Last built: Friday, 25th March 2016; 11:56:40 PM
  */
 
 "use strict";
@@ -322,6 +322,7 @@ s.getPseudoProperties = function(pseudoSelector) {
  * This file defines non-selector-specific helper functions to reduce repetition within
  * the selectors.js file.
  */
+s._r = {};
 
 /* This internal function attempts to exactly match a given test case with a given
  * pattern by wrapping it with ^ and $.
@@ -334,7 +335,10 @@ s._isExactMatch = function(pattern, testCase) {
   if (pattern instanceof RegExp)
     pattern = pattern.source;
     
-  return new RegExp("^" + pattern + "$").test(testCase);
+  if (!s._r[pattern])
+    s._r[pattern] = new RegExp("^" + pattern + "$");
+  
+  return s._r[pattern].test(testCase);
 };
 
 /* Source: src/W3Core.js
