@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Thursday, 24th March 2016; 2:41:44 PM
+ * Last built: Friday, 25th March 2016; 2:59:19 PM
  */
 
 "use strict";
@@ -206,7 +206,7 @@ s.getSelectors = function(selectorSequence) {
       }
     )
   ;
-  console.info(r);
+  
   return r;
 }
 
@@ -407,34 +407,34 @@ s._string2 = "(\\'([^\\n\\r\\f\\\']|\\" + s._nl + "|" + s._nonascii + "|" + s._e
 s._string = "(" + s._string1 + "|" + s._string2 + ")"
 
 // invalid1         \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*
-s._invalid1 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*";
+//s._invalid1 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*";
 
 // invalid2         \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*
-s._invalid2 = "([^\\n\\r\\f\\']|" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*";
+//s._invalid2 = "([^\\n\\r\\f\\']|" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*";
 
 // invalid          {invalid1}|{invalid2}
-s._invalid = "(" + s._invalid1 + "|" + s._invalid2 + ")";
+//s._invalid = "(" + s._invalid1 + "|" + s._invalid2 + ")";
 
 // badstring1       \"([^\n\r\f\\"]|\\{nl}|{escape})*\\?
-s._badstring1 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._escape + ")*\\\\?";
+//s._badstring1 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._escape + ")*\\\\?";
 
 // badstring2       \'([^\n\r\f\\']|\\{nl}|{escape})*\\?
-s._badstring2 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._escape + ")*\\\\?";
+//s._badstring2 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._escape + ")*\\\\?";
 
 // badstring        {badstring1}|{badstring2}
-s._badstring = "(" + s._badstring1 + "|" + s._badstring2 + ")";
+//s._badstring = "(" + s._badstring1 + "|" + s._badstring2 + ")";
 
 // badcomment1      \/\*[^*]*\*+([^/*][^*]*\*+)*
-s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\+)*";
+//s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\+)*";
 
 // badcomment2      \/\*[^*]*(\*+[^/*][^*]*)*
-s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
+//s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
 
 // badcomment       {badcomment1}|{badcomment2}
-s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
+//s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
 
 // comment		      \/\*[^*]*\*+([^/*][^*]*\*+)*\/
-s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
+//s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
 
 // baduri1          url\({w}([!#$%&*-\[\]-~]|{nonascii}|{escape})*{w}
 // baduri2          url\({w}{string}{w}
@@ -443,10 +443,10 @@ s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
 // url		          ([!#$%&*-~]|{nonascii}|{escape})*
 
 // A	            	a|\\0{0,4}(41|61)(\r\n|[ \t\r\n\f])?
-s._A = "([aA]|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
+//s._A = "([aA]|\\0{0,4}(41|61)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // C	            	c|\\0{0,4}(43|63)(\r\n|[ \t\r\n\f])?
-s._C = "([cC]|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
+//s._C = "([cC]|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // D	            	d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
 s._D = "([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
@@ -455,22 +455,22 @@ s._D = "([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
 s._E = "([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // G	            	g|\\0{0,4}(47|67)(\r\n|[ \t\r\n\f])?|\\g
-s._G = "([gG]|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[gG])";
+//s._G = "([gG]|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[gG])";
 
 // H	            	h|\\0{0,4}(48|68)(\r\n|[ \t\r\n\f])?|\\h
-s._H = "([hH]|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[hH])";
+//s._H = "([hH]|\\0{0,4}(48|68)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[hH])";
 
 // I	            	i|\\0{0,4}(49|69)(\r\n|[ \t\r\n\f])?|\\i
-s._I = "([iI]|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[iI])";
+//s._I = "([iI]|\\0{0,4}(49|69)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[iI])";
 
 // K	            	k|\\0{0,4}(4b|6b)(\r\n|[ \t\r\n\f])?|\\k
-s._K = "([kK]|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[kK])";
+//s._K = "([kK]|\\0{0,4}(4b|6b)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[kK])";
 
 // L                l|\\0{0,4}(4c|6c)(\r\n|[ \t\r\n\f])?|\\l
-s._L = "([lL]|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[lL])";
+//s._L = "([lL]|\\0{0,4}(4c|6c)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[lL])";
 
 // M	            	m|\\0{0,4}(4d|6d)(\r\n|[ \t\r\n\f])?|\\m
-s._N = "([mM]|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[mM])";
+//s._M = "([mM]|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[mM])";
 
 // N	            	n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
 s._N = "([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN])";
@@ -479,28 +479,28 @@ s._N = "([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN])";
 s._O = "([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO])";
 
 // P	            	p|\\0{0,4}(50|70)(\r\n|[ \t\r\n\f])?|\\p
-s._P = "([pP]|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[pP])";
+//s._P = "([pP]|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[pP])";
 
 // R	            	r|\\0{0,4}(52|72)(\r\n|[ \t\r\n\f])?|\\r
-s._R = "([rR]|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[rR])";
+//s._R = "([rR]|\\0{0,4}(52|72)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[rR])";
 
 // S	            	s|\\0{0,4}(53|73)(\r\n|[ \t\r\n\f])?|\\s
-s._S = "([sS]|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[sS])";
+//s._S = "([sS]|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[sS])";
 
 // T	            	t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
 s._T = "([tT]|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[tT])";
 
 // U		            u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u
-s._U = "([uU]|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[uU])";
+//s._U = "([uU]|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[uU])";
 
 // V		            v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
 s._V = "([vV]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[vV])";
 
 // X		            x|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\x
-s._X = "([xX]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[xX])";
+//s._X = "([xX]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[xX])";
 
 // Z		            z|\\0{0,4}(5a|7a)(\r\n|[ \t\r\n\f])?|\\z
-s._Z = "([zZ]|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[zZ])";
+//s._Z = "([zZ]|\\0{0,4}(5a|7a)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[zZ])";
 
 // "~="             return INCLUDES;
 s._INCLUDES = "~=";
@@ -539,19 +539,19 @@ s._TILDE = s._w + "~";
 s._NOT = ":" + s._N + s._O + s._T + "\\(";
 
 // @{ident}         return ATKEYWORD;
-s._ATKEYWORD = "@" + s._ident;
+//s._ATKEYWORD = "@" + s._ident;
 
 // {num}%           return PERCENTAGE;
-s._PERCENTAGE = s._num + "%";
+//s._PERCENTAGE = s._num + "%";
 
 // {num}{ident}     return DIMENSION;
-s._DIMENSION = s._num + s._ident;
+//s._DIMENSION = s._num + s._ident;
 
 // "<!--"           return CDO;
-s._CDO = "<!--";
+//s._CDO = "<!--";
 
 // "-->"            return CDC;
-s._CDC = "-->";;
+//s._CDC = "-->";;
 
 /* Source: src/W3Extended.js
  * -------------------------------------------------------------------------------------
