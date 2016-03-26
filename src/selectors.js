@@ -174,10 +174,8 @@ s.getSelectors = function(selectorSequence) {
   if (!selectorSequence || typeof selectorSequence !== "string")
     return [];
     
-  var
-    r = [],
-    matches = selectorSequence.replace(
-      new RegExp(
+  if (!s._r.getSelectors)
+    s._r.getSelectors = new RegExp(
           s._type_selector
         + "|" + s._universal
         + "|" + s._HASH
@@ -186,7 +184,12 @@ s.getSelectors = function(selectorSequence) {
         + "|::?(" + s._functional_pseudo + "|" + s._indent + ")"
         + "|" + s._negation
         + "|" + s._combinator, "g"
-      ), function(match) {
+      );
+  
+  var
+    r = [],
+    matches = selectorSequence.replace(
+      s._r.getSelectors, function(match) {
         if (match)
           r.push(match.trim());
         return '';

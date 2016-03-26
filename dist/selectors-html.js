@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Friday, 25th March 2016; 11:56:40 PM
+ * Last built: Saturday, 26th March 2016; 12:14:12 AM
  */
 
 "use strict";
@@ -187,10 +187,8 @@ s.getSelectors = function(selectorSequence) {
   if (!selectorSequence || typeof selectorSequence !== "string")
     return [];
     
-  var
-    r = [],
-    matches = selectorSequence.replace(
-      new RegExp(
+  if (!s._r.getSelectors)
+    s._r.getSelectors = new RegExp(
           s._type_selector
         + "|" + s._universal
         + "|" + s._HASH
@@ -199,7 +197,12 @@ s.getSelectors = function(selectorSequence) {
         + "|::?(" + s._functional_pseudo + "|" + s._indent + ")"
         + "|" + s._negation
         + "|" + s._combinator, "g"
-      ), function(match) {
+      );
+  
+  var
+    r = [],
+    matches = selectorSequence.replace(
+      s._r.getSelectors, function(match) {
         if (match)
           r.push(match.trim());
         return '';
@@ -755,8 +758,11 @@ s._splitNamespaceAndName = function(namespaceAndName) {
     name: null
   };
   
+  if (!s._r.namespaceAndName)
+    s._r.namespaceAndName = new RegExp("^" + s._namespace_prefix);
+  
   r.name = namespaceAndName.replace(
-    new RegExp("^" + s._namespace_prefix), function(match) {
+    s._r.namespaceAndName, function(match) {
       r.namespace = match.substr(0, match.length - 1);
       return '';
     }
@@ -784,8 +790,8 @@ s._getNamespaceAndNameFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
     
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeNamespaceAndName)
+    s._r.attributeNamespaceAndName = new RegExp(
         "(^\\[\\s*|\\s*"
       + "((" + s._PREFIXMATCH + "|"
       + s._SUFFIXMATCH + "|"
@@ -793,9 +799,9 @@ s._getNamespaceAndNameFromAttributeSelector = function(attributeSelector) {
       + "=|"
       + s._INCLUDES + "|"
       + s._DASHMATCH + ")\\s*(" + s._ident + "|" + s._string + ")\\s*"
-      + ")?\\]$)", "g"
-    ), ''
-  );
+      + ")?\\]$)", "g");
+  
+  return attributeSelector.replace(s._r.attributeNamespaceAndName, '');
 }
 
 /* This function gets the symbol (3) from an attribute selector by replacing all of the
@@ -807,13 +813,14 @@ s._getSymbolFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
   
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeSymbol)
+    s._r.attributeSymbol = new RegExp(
         "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*|"
       + "\\s*(" + s._ident + "|" + s._string + ")\\s*|"
       + "\\]$)", "g"
-    ), ''
-  );
+    );
+  
+  return attributeSelector.replace(s._r.attributeSymbol, '');
 }
 
 /* This function gets the value (4) from an attribute selector by replacing all of the
@@ -825,8 +832,8 @@ s._getValueFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
     
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeValue)
+    s._r.attributeValue = new RegExp(
         "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*"
       + "(" + s._PREFIXMATCH + "|"
       + s._SUFFIXMATCH + "|"
@@ -835,7 +842,10 @@ s._getValueFromAttributeSelector = function(attributeSelector) {
       + s._INCLUDES + "|"
       + s._DASHMATCH + ")\\s*[\"']?|"
       + "[\"']?\\s*\\]$)", "g"
-    ), ''
+    );
+    
+  return attributeSelector.replace(
+    s._r.attributeValue, ''
   );
 };
 
@@ -967,8 +977,11 @@ s._getVendorPrefixFromPseudoSelector = function(pseudoSelector) {
   if (!s._isExactMatch(s._vendor_prefixed_pseudo, pseudoSelector))
     return null;
     
+  if (!s._r.vendorPrefix)
+    s._r.vendorPrefix = new RegExp(s._nmchar + '-');
+    
   // Split the selector on any nmchar followed by a hyphen.
-  var split = pseudoSelector.split(new RegExp(s._nmchar + '-'));
+  var split = pseudoSelector.split(s._r.vendorPrefix);
   
   return split[0].substr((pseudoSelector.charAt(1) === ":" ? 2 : 1), split[0].length) + split[1] + '-';
 }
@@ -983,11 +996,14 @@ s._getNameFromPseudoSelector = function(pseudoSelector) {
   if (!pseudoSelector || typeof pseudoSelector !== "string")
     return false;
     
-  return pseudoSelector.replace(
-    new RegExp(
+  if (!s._r.pseudoName)
+    s._r.pseudoName = new RegExp(
         "^::?[-_]" + s._nmstart + s._nmchar + "*-"
       + "|^::?|\\(.*\\)$", "g"
-    ), ''
+    );
+    
+  return pseudoSelector.replace(
+    s._r.pseudoName, ''
   )
 }
 

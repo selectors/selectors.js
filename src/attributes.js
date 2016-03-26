@@ -16,8 +16,8 @@ s._getNamespaceAndNameFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
     
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeNamespaceAndName)
+    s._r.attributeNamespaceAndName = new RegExp(
         "(^\\[\\s*|\\s*"
       + "((" + s._PREFIXMATCH + "|"
       + s._SUFFIXMATCH + "|"
@@ -25,9 +25,9 @@ s._getNamespaceAndNameFromAttributeSelector = function(attributeSelector) {
       + "=|"
       + s._INCLUDES + "|"
       + s._DASHMATCH + ")\\s*(" + s._ident + "|" + s._string + ")\\s*"
-      + ")?\\]$)", "g"
-    ), ''
-  );
+      + ")?\\]$)", "g");
+  
+  return attributeSelector.replace(s._r.attributeNamespaceAndName, '');
 }
 
 /* This function gets the symbol (3) from an attribute selector by replacing all of the
@@ -39,13 +39,14 @@ s._getSymbolFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
   
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeSymbol)
+    s._r.attributeSymbol = new RegExp(
         "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*|"
       + "\\s*(" + s._ident + "|" + s._string + ")\\s*|"
       + "\\]$)", "g"
-    ), ''
-  );
+    );
+  
+  return attributeSelector.replace(s._r.attributeSymbol, '');
 }
 
 /* This function gets the value (4) from an attribute selector by replacing all of the
@@ -57,8 +58,8 @@ s._getValueFromAttributeSelector = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
     
-  return attributeSelector.replace(
-    new RegExp(
+  if (!s._r.attributeValue)
+    s._r.attributeValue = new RegExp(
         "(^\\[\\s*(" + s._namespace_prefix + ")?" + s._ident + "\\s*"
       + "(" + s._PREFIXMATCH + "|"
       + s._SUFFIXMATCH + "|"
@@ -67,6 +68,9 @@ s._getValueFromAttributeSelector = function(attributeSelector) {
       + s._INCLUDES + "|"
       + s._DASHMATCH + ")\\s*[\"']?|"
       + "[\"']?\\s*\\]$)", "g"
-    ), ''
+    );
+    
+  return attributeSelector.replace(
+    s._r.attributeValue, ''
   );
 }

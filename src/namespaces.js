@@ -15,8 +15,11 @@ s._splitNamespaceAndName = function(namespaceAndName) {
     name: null
   };
   
+  if (!s._r.namespaceAndName)
+    s._r.namespaceAndName = new RegExp("^" + s._namespace_prefix);
+  
   r.name = namespaceAndName.replace(
-    new RegExp("^" + s._namespace_prefix), function(match) {
+    s._r.namespaceAndName, function(match) {
       r.namespace = match.substr(0, match.length - 1);
       return '';
     }

@@ -125,8 +125,11 @@ s._getVendorPrefixFromPseudoSelector = function(pseudoSelector) {
   if (!s._isExactMatch(s._vendor_prefixed_pseudo, pseudoSelector))
     return null;
     
+  if (!s._r.vendorPrefix)
+    s._r.vendorPrefix = new RegExp(s._nmchar + '-');
+    
   // Split the selector on any nmchar followed by a hyphen.
-  var split = pseudoSelector.split(new RegExp(s._nmchar + '-'));
+  var split = pseudoSelector.split(s._r.vendorPrefix);
   
   return split[0].substr((pseudoSelector.charAt(1) === ":" ? 2 : 1), split[0].length) + split[1] + '-';
 }
@@ -141,11 +144,14 @@ s._getNameFromPseudoSelector = function(pseudoSelector) {
   if (!pseudoSelector || typeof pseudoSelector !== "string")
     return false;
     
-  return pseudoSelector.replace(
-    new RegExp(
+  if (!s._r.pseudoName)
+    s._r.pseudoName = new RegExp(
         "^::?[-_]" + s._nmstart + s._nmchar + "*-"
       + "|^::?|\\(.*\\)$", "g"
-    ), ''
+    );
+    
+  return pseudoSelector.replace(
+    s._r.pseudoName, ''
   )
 }
 
