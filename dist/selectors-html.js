@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Saturday, 26th March 2016; 12:14:12 AM
+ * Last built: Saturday, 26th March 2016; 7:28:09 AM
  */
 
 "use strict";
@@ -202,7 +202,7 @@ s.getSelectors = function(selectorSequence) {
   var
     r = [],
     matches = selectorSequence.replace(
-      s._r.getSelectors, function(match) {
+      s._r.getSelectors.valueOf(), function(match) {
         if (match)
           r.push(match.trim());
         return '';
@@ -369,49 +369,49 @@ s._isExactMatch = function(pattern, testCase) {
  */
 
 // h		            [0-9a-f]
-s._h = "[0-9a-fA-F]";
+s._h = "(?:[0-9a-fA-F])";
 
 // nonascii	        [\240-\4177777]
-s._nonascii = "(?![\\u0000-\\u0239]).*";
+s._nonascii = "(?:((?![\\u0000-\\u0239]).*))";
 
 // unicode		      \\{h}{1,6}(\r\n|[ \t\r\n\f])?
 s._unicode = "(\\\\" + s._h + "{1,6}(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // escape		        {unicode}|\\[^\r\n\f0-9a-f]
-s._escape = "(" + s._unicode + "|\\\\[^\\r\\n\\f0-9a-f])";
+s._escape = "(?:(" + s._unicode + "|\\\\[^\\r\\n\\f0-9a-f]))";
 
 // nmstart		      [_a-z]|{nonascii}|{escape}
-s._nmstart = "([_a-zA-Z]|" + s._nonascii + "|" + s._escape + ")";
+s._nmstart = "(?:([_a-zA-Z]|" + s._nonascii + "|" + s._escape + "))";
 
 // nmchar	          [_a-z0-9-]|{nonascii}|{escape}
-s._nmchar = "([_a-zA-Z0-9-]|" + s._nonascii + "|" + s._escape + ")";
+s._nmchar = "(?:([_a-zA-Z0-9-]|" + s._nonascii + "|" + s._escape + "))";
 
 // ident		        -?{nmstart}{nmchar}*
-s._ident = "(-?" + s._nmstart + s._nmchar + "*)";
+s._ident = "(?:(-?" + s._nmstart + s._nmchar + "*))";
 
 // name		          {nmchar}+
 s._name = s._nmchar + "+";
 
 // num		          [0-9]+|[0-9]*"."[0-9]+
-s._num = "([0-9]+|[0-9]*\\.[0-9]+)";
+s._num = "(?:([0-9]+|[0-9]*\\.[0-9]+))";
 
 // s		            [ \t\r\n\f]+
-s._s = "[ \\t\\r\\n\\f]+";
+s._s = "(?:([ \\t\\r\\n\\f]+))";
 
 // w		            {s}?
-s._w = "[ \\t\\r\\n\\f]*";
+s._w = "(?:([ \\t\\r\\n\\f]*))";
 
 // nl		            \n|\r\n|\r|\f
 s._nl = "\\n|\\r\\n|\\r|\\f";
 
 // string1		      \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
-s._string1 = '(\\"([^\\n\\r\\f\\\"]|\\' + s._nl + "|" + s._nonascii + "|" + s._escape + ')*\\")';
+s._string1 = '(?:(\\"([^\\n\\r\\f\\\"]|\\' + s._nl + "|" + s._nonascii + "|" + s._escape + ')*\\"))';
 
 // string2		      \'([^\n\r\f\\']|\\{nl}|{escape})*\'
-s._string2 = "(\\'([^\\n\\r\\f\\\']|\\" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*\\')";
+s._string2 = "(?:(\\'([^\\n\\r\\f\\\']|\\" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*\\'))";
 
 // string		        {string1}|{string2}
-s._string = "(" + s._string1 + "|" + s._string2 + ")"
+s._string = "(?:(" + s._string1 + "|" + s._string2 + "))"
 
 // invalid1         \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*
 //s._invalid1 = "([^\\n\\r\\f\\\"]|" + s._nl + "|" + s._nonascii + "|" + s._escape + ")*";
@@ -456,10 +456,10 @@ s._string = "(" + s._string1 + "|" + s._string2 + ")"
 //s._C = "([cC]|\\0{0,4}(43|63)(\\r\\n|[ \\t\\r\\n\\f])?)";
 
 // D	            	d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
-s._D = "([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._D = "(?:([dD]|\\0{0,4}(44|64)(\\r\\n|[ \\t\\r\\n\\f])?))";
 
 // E	            	e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?
-s._E = "([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
+s._E = "(?:([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?))";
 
 // G	            	g|\\0{0,4}(47|67)(\r\n|[ \t\r\n\f])?|\\g
 //s._G = "([gG]|\\0{0,4}(47|67)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[gG])";
@@ -480,10 +480,10 @@ s._E = "([eE]|\\0{0,4}(45|65)(\\r\\n|[ \\t\\r\\n\\f])?)";
 //s._M = "([mM]|\\0{0,4}(4d|6d)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[mM])";
 
 // N	            	n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
-s._N = "([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN])";
+s._N = "(?:([nN]|\\0{0,4}(4e|6e)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[nN]))";
 
 // O	            	o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o
-s._O = "([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO])";
+s._O = "(?:([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO]))";
 
 // P	            	p|\\0{0,4}(50|70)(\r\n|[ \t\r\n\f])?|\\p
 //s._P = "([pP]|\\0{0,4}(50|70)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[pP])";
@@ -495,13 +495,13 @@ s._O = "([oO]|\\0{0,4}(4f|6f)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[oO])";
 //s._S = "([sS]|\\0{0,4}(53|73)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[sS])";
 
 // T	            	t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
-s._T = "([tT]|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[tT])";
+s._T = "(?:([tT]|\\0{0,4}(54|74)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[tT]))";
 
 // U		            u|\\0{0,4}(55|75)(\r\n|[ \t\r\n\f])?|\\u
 //s._U = "([uU]|\\0{0,4}(55|75)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[uU])";
 
 // V		            v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
-s._V = "([vV]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[vV])";
+s._V = "(?:([vV]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[vV]))";
 
 // X		            x|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\x
 //s._X = "([xX]|\\0{0,4}(58|78)(\\r\\n|[ \\t\\r\\n\\f])?|\\\\[xX])";
@@ -525,7 +525,7 @@ s._SUFFIXMATCH = "\\$=";
 s._SUBSTRINGMATCH = "\\*=";
 
 // {ident}"("       return FUNCTION;
-s._FUNCTION = s._ident + "\\(";
+s._FUNCTION = s._ident + "(?:(\\())";
 
 // "#"{name}        return HASH;
 s._HASH = "#" + s._name;
@@ -543,7 +543,7 @@ s._COMMA = s._w + ",";
 s._TILDE = s._w + "~";
 
 // ":"{N}{O}{T}"("  return NOT;
-s._NOT = ":" + s._N + s._O + s._T + "\\(";
+s._NOT = ":" + s._N + s._O + s._T + "(?:(\\())";
 
 // @{ident}         return ATKEYWORD;
 //s._ATKEYWORD = "@" + s._ident;
@@ -552,7 +552,7 @@ s._NOT = ":" + s._N + s._O + s._T + "\\(";
 //s._PERCENTAGE = s._num + "%";
 
 // {num}{ident}     return DIMENSION;
-//s._DIMENSION = s._num + s._ident;
+s._DIMENSION = "(?:(" + s._num + s._ident + "))";
 
 // "<!--"           return CDO;
 //s._CDO = "<!--";
@@ -638,7 +638,7 @@ s._namespace_prefix = "(" + s._ident + "|\\*)?\\|";
  *  : [ namespace_prefix ]? element_name
  *  ;
  */
-s._type_selector = "(" + s._namespace_prefix + ")?" + s._ident;
+s._type_selector = "(?:((" + s._namespace_prefix + ")?" + s._ident + "))";
 
 /* universal
   * : [ namespace_prefix ]? '*'

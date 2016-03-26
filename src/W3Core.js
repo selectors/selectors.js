@@ -205,7 +205,7 @@ s._NOT = ":" + s._N + s._O + s._T + "\\(";
 //s._PERCENTAGE = s._num + "%";
 
 // {num}{ident}     return DIMENSION;
-//s._DIMENSION = s._num + s._ident;
+s._DIMENSION = s._num + s._ident;
 
 // "<!--"           return CDO;
 //s._CDO = "<!--";
