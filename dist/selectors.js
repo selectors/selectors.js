@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 29th March 2016; 8:51:13 AM
+ * Last built: Tuesday, 29th March 2016; 2:33:28 PM
  */
 
 "use strict";
@@ -192,7 +192,7 @@ s.getSelectors = function(selectorSequence) {
         + "|" + s._HASH
         + "|" + s._class
         + "|" + s._attrib
-        + "|::?(" + s._functional_pseudo + "|" + s._indent + ")"
+        + "|::?(" + s._functional_pseudo + "|" + s._ident + ")"
         + "|" + s._negation
         + "|" + s._combinator, "g"
       );
@@ -201,8 +201,10 @@ s.getSelectors = function(selectorSequence) {
     r = [],
     matches = selectorSequence.replace(
       s._r.getSelectors, function(match) {
-        if (match)
-          r.push(match.trim());
+        if (match) {
+          var trimmed = match.trim();
+          r.push(trimmed == "" && match.length > 0 ? " " : trimmed);
+        }
         return '';
       }
     )

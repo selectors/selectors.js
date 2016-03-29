@@ -181,7 +181,7 @@ s.getSelectors = function(selectorSequence) {
         + "|" + s._HASH
         + "|" + s._class
         + "|" + s._attrib
-        + "|::?(" + s._functional_pseudo + "|" + s._indent + ")"
+        + "|::?(" + s._functional_pseudo + "|" + s._ident + ")"
         + "|" + s._negation
         + "|" + s._combinator, "g"
       );
@@ -190,8 +190,10 @@ s.getSelectors = function(selectorSequence) {
     r = [],
     matches = selectorSequence.replace(
       s._r.getSelectors, function(match) {
-        if (match)
-          r.push(match.trim());
+        if (match) {
+          var trimmed = match.trim();
+          r.push(trimmed == "" && match.length > 0 ? " " : trimmed);
+        }
         return '';
       }
     )
