@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 29th March 2016; 2:33:28 PM
+ * Last built: Tuesday, 29th March 2016; 2:36:42 PM
  */
 
 "use strict";
@@ -127,7 +127,9 @@ s.getType = function(selector) {
   if (!selector || typeof selector !== "string")
     throw new Error("s.getType should be passed a non-empty string value, instead was passed " + selector);
   
-  if (s._isExactMatch(s._type_selector, selector))
+  if (s._isExactMatch(s._combinator, selector))
+    return "combinator";
+  else if (s._isExactMatch(s._type_selector, selector))
     return "type";
   else if (s._isExactMatch(s._universal, selector))
     return "universal";

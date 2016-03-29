@@ -115,5 +115,17 @@ describe("s.getType( selector )", function() {
     it("Returns `attribute` from `:not([att='v\\\"al'])`", function() {
       expect(s.getType(':not([att=\'v\\\"al\'])')).toEqual('negation');
     });
+    
+    it("Returns `combinator` from `>`", function() {
+      expect(s.getType('>')).toEqual('combinator');
+    });
+    
+    it("Returns `combinator` from ` `", function() {
+      expect(s.getType(' ')).toEqual('combinator');
+    });
+    
+    it("Returns `combinator` from `+`", function() {
+      expect(s.getType('+')).toEqual('combinator');
+    });
   });
 });

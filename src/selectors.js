@@ -116,7 +116,9 @@ s.getType = function(selector) {
   if (!selector || typeof selector !== "string")
     throw new Error("s.getType should be passed a non-empty string value, instead was passed " + selector);
   
-  if (s._isExactMatch(s._type_selector, selector))
+  if (s._isExactMatch(s._combinator, selector))
+    return "combinator";
+  else if (s._isExactMatch(s._type_selector, selector))
     return "type";
   else if (s._isExactMatch(s._universal, selector))
     return "universal";
