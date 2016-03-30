@@ -111,6 +111,8 @@ s.getSequences("foo.bar:hover")    [ "foo", ".bar", ":hover" ]
 This function takes an individual `selector` (like `"foo"` or `".bar"`) and returns what type of selector it is.
 
 ```JavaScript
+s.getType('+')             // "combinator"
+s.getType('*')             // "universal"
 s.getType('div')           // "type"
 s.getType('.bar')          // "class"
 s.getType('#baz')          // "id"
