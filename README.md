@@ -102,9 +102,9 @@ s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
 This function takes a selector sequence (like `"foo > .bar:hover"`) `selectorSequence` and returns an array of individual selectors.
 
 ```JavaScript
-s.getSequences("foo")                 [ "foo" ]
-s.getSequences("foo > .bar")          [ "foo", ">", ".bar" ]
-s.getSequences("foo > .bar:hover")    [ "foo", ">", ".bar", ":hover" ]
+s.getSelectors("foo")                 [ "foo" ]
+s.getSelectors("foo > .bar")          [ "foo", ">", ".bar" ]
+s.getSelectors("foo > .bar:hover")    [ "foo", ">", ".bar", ":hover" ]
 ```
 
 ###s.getElements( selectorSequence )
