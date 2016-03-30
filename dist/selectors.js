@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Tuesday, 29th March 2016; 2:36:42 PM
+ * Last built: Wednesday, 30th March 2016; 1:45:35 PM
  */
 
 "use strict";
@@ -211,6 +211,31 @@ s.getSelectors = function(selectorSequence) {
       }
     )
   ;
+  
+  return r;
+}
+
+/* This function takes a selector sequence and returns an array of arrays of individual
+ * elements (separated by a combinator). This function wraps the above getSelectors and
+ * getType functions.
+ * ------
+ * @{selectorSequence}: A selector sequence (e.g. foo.bar) STRING.
+ */
+s.getElements = function(selectorSequence) {
+  if (!selectorSequence || typeof selectorSequence !== "string")
+    return [];
+    
+  var
+    r = [],
+    elementIndex = -1;
+  ;
+  
+  s.getSelectors(selectorSequence).forEach(function(selector, index) {
+    if (index === 0 || s.getType(selector) === "combinator")
+      elementIndex = r.push([]) - 1;
+      
+    r[elementIndex].push(selector);
+  })
   
   return r;
 }

@@ -99,12 +99,21 @@ s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
 ```
 
 ###s.getSelectors( selectorSequence )
-This function takes a selector sequence (like `"foo.bar:hover"`) `selectorSequence` and returns an array of individual selectors.
+This function takes a selector sequence (like `"foo > .bar:hover"`) `selectorSequence` and returns an array of individual selectors.
 
 ```JavaScript
-s.getSequences("foo")              [ "foo" ]
-s.getSequences("foo.bar")          [ "foo", ".bar" ]
-s.getSequences("foo.bar:hover")    [ "foo", ".bar", ":hover" ]
+s.getSequences("foo")                 [ "foo" ]
+s.getSequences("foo > .bar")          [ "foo", ">", ".bar" ]
+s.getSequences("foo > .bar:hover")    [ "foo", ">", ".bar", ":hover" ]
+```
+
+###s.getElements( selectorSequence )
+This function takes a selector sequence (like `"foo > .bar:hover"`) `selectorSequence` and returns an array of arrays of individual selectors which make up individual elements (separated by combinators).
+
+```JavaScript
+s.getElements("foo")                 [ [ "foo" ] ]
+s.getElements("foo > .bar")          [ [ "foo" ], [ ">", "bar" ] ]
+s.getElements("foo > .bar:hover")    [ [ "foo" ], [ ">", "bar", ":hover" ] ]
 ```
 
 ###s.getType( selector )
