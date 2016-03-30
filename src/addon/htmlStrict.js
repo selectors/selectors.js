@@ -13,7 +13,7 @@ s._isValidHtml = function(type, selector) {
   if (type === "type")
     return s._isValidHtmlElement(selector);
   if (type === "attribute")
-    return s.isValidHtmlAttribute(selector);
+    return s._isValidHtmlAttribute(selector);
 }
 
 /* This function validates a CSS type selector to ensure it has a corresponding element

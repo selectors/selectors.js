@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Wednesday, 30th March 2016; 1:45:35 PM
+ * Last built: Wednesday, 30th March 2016; 2:09:42 PM
  */
 
 "use strict";
@@ -1069,7 +1069,7 @@ s._isValidHtml = function(type, selector) {
   if (type === "type")
     return s._isValidHtmlElement(selector);
   if (type === "attribute")
-    return s.isValidHtmlAttribute(selector);
+    return s._isValidHtmlAttribute(selector);
 }
 
 /* This function validates a CSS type selector to ensure it has a corresponding element
