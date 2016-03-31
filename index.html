@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Selectors.js</title>
+    <title>Selectors.js by selectors</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -14,23 +14,24 @@
       <h1 class="project-name">Selectors.js</h1>
       <h2 class="project-tagline">Detect, parse and validate CSS selectors quickly and easily.</h2>
       <a href="https://github.com/selectors/selectors.js" class="btn">View on GitHub</a>
-      <a href="https://raw.githubusercontent.com/selectors/selectors.js/master/dist/selectors.js" class="btn">Download Full <em>selectors.js</em></a>
-      <a href="https://raw.githubusercontent.com/selectors/selectors.js/master/dist/selectors.min.js" class="btn">Download Minified <em>selectors.min.js</em></a>
+      <a href="https://github.com/selectors/selectors.js/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/selectors/selectors.js/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
-<p>Selectors.js is a CSS Selector parser and validator initially created for use by <a href="https://selectors.io">Selectors.io</a>.</p>
+    <section class="main-content">
+      <p>Selectors.js is a CSS Selector parser and validator initially created for use by <a href="https://selectors.io">Selectors.io</a>.</p>
 
 <h3>
 <a id="in-this-readme" class="anchor" href="#in-this-readme" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In This Readme</h3>
 
 <ol>
-<li><strong><a href="#download">Download</a></strong></li>
-<li><strong><a href="#build-and-test">Build and Test</a></strong></li>
+<li><strong><a href="#download-links">Download Links</a></strong></li>
 <li><strong><a href="#documentation">Documentation</a></strong></li>
+<li><strong><a href="#build-and-test">Building, Compiling and Testing</a></strong></li>
 </ol>
 
 <h2>
-<a id="download" class="anchor" href="#download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download</h2>
+<a id="download-links" class="anchor" href="#download-links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download Links</h2>
 
 <p>You only need one of the below files. For production it's recommended that you use a minified (<code>.min.js</code>) version.</p>
 
@@ -61,18 +62,7 @@
 </tbody>
 </table>
 
-<p>The htmlStrict version offers extra validation methods on HTML5, SVG1.1 and MathML3 Element and Attribute names. WAI-ARIA attribute names are also included in this.</p>
-
-<h2>
-<a id="build-and-test" class="anchor" href="#build-and-test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build and Test</h2>
-
-<p>This uses <a href="http://gruntjs.com">Grunt</a> for minifying, concatenating and testing (<a href="http://jasmine.github.io/">Jasmine</a>). These are configured through <a href="https://nodejs.org/en/">Node.js</a>, so you'll also need to install that, then run the following command to install the packages:</p>
-
-<div class="highlight highlight-source-js"><pre>npm install</pre></div>
-
-<p>To compile the dist files and run the testing, install Grunt's command line interface (<code>npm install -g grunt-cli</code>), then run:</p>
-
-<div class="highlight highlight-source-js"><pre>grunt</pre></div>
+<p>The <em>htmlStrict</em> version offers extra validation methods on HTML5, SVG1.1 and MathML3 Element and Attribute names. WAI-ARIA attribute names are also included in this.</p>
 
 <h2>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
@@ -132,25 +122,36 @@
 
 <p>This function takes a selectors group (like <code>"foo, .bar"</code>) and returns an array of selector sequences.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar<span class="pl-pds">"</span></span>)            [ <span class="pl-s"><span class="pl-pds">"</span>foo.bar<span class="pl-pds">"</span></span> ]
-<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar, #baz<span class="pl-pds">"</span></span>)      [ <span class="pl-s"><span class="pl-pds">"</span>foo.bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>#baz<span class="pl-pds">"</span></span> ]
-<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo, .bar, #baz<span class="pl-pds">"</span></span>)    [ <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>.bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>#baz<span class="pl-pds">"</span></span> ]</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar<span class="pl-pds">"</span></span>)            <span class="pl-c">// [ "foo.bar" ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar, #baz<span class="pl-pds">"</span></span>)      <span class="pl-c">// [ "foo.bar", "#baz" ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo, .bar, #baz<span class="pl-pds">"</span></span>)    <span class="pl-c">// [ "foo", ".bar", "#baz" ]</span></pre></div>
 
 <h3>
 <a id="sgetselectors-selectorsequence-" class="anchor" href="#sgetselectors-selectorsequence-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.getSelectors( selectorSequence )</h3>
 
-<p>This function takes a selector sequence (like <code>"foo.bar:hover"</code>) <code>selectorSequence</code> and returns an array of individual selectors.</p>
+<p>This function takes a selector sequence (like <code>"foo &gt; .bar:hover"</code>) <code>selectorSequence</code> and returns an array of individual selectors.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)              [ <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> ]
-<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar<span class="pl-pds">"</span></span>)          [ <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>.bar<span class="pl-pds">"</span></span> ]
-<span class="pl-smi">s</span>.<span class="pl-en">getSequences</span>(<span class="pl-s"><span class="pl-pds">"</span>foo.bar:hover<span class="pl-pds">"</span></span>)    [ <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>.bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>:hover<span class="pl-pds">"</span></span> ]</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getSelectors</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)                 <span class="pl-c">// [ "foo" ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getSelectors</span>(<span class="pl-s"><span class="pl-pds">"</span>foo &gt; .bar<span class="pl-pds">"</span></span>)          <span class="pl-c">// [ "foo", "&gt;", ".bar" ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getSelectors</span>(<span class="pl-s"><span class="pl-pds">"</span>foo &gt; .bar:hover<span class="pl-pds">"</span></span>)    <span class="pl-c">// [ "foo", "&gt;", ".bar", ":hover" ]</span></pre></div>
+
+<h3>
+<a id="sgetelements-selectorsequence-" class="anchor" href="#sgetelements-selectorsequence-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.getElements( selectorSequence )</h3>
+
+<p>This function takes a selector sequence (like <code>"foo &gt; .bar:hover"</code>) <code>selectorSequence</code> and returns an array of arrays of individual selectors which make up individual elements (separated by combinators).</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getElements</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)                 <span class="pl-c">// [ [ "foo" ] ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getElements</span>(<span class="pl-s"><span class="pl-pds">"</span>foo &gt; .bar<span class="pl-pds">"</span></span>)          <span class="pl-c">// [ [ "foo" ], [ "&gt;", "bar" ] ]</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getElements</span>(<span class="pl-s"><span class="pl-pds">"</span>foo &gt; .bar:hover<span class="pl-pds">"</span></span>)    <span class="pl-c">// [ [ "foo" ], [ "&gt;", "bar", ":hover" ] ]</span></pre></div>
 
 <h3>
 <a id="sgettype-selector-" class="anchor" href="#sgettype-selector-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.getType( selector )</h3>
 
 <p>This function takes an individual <code>selector</code> (like <code>"foo"</code> or <code>".bar"</code>) and returns what type of selector it is.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>)           <span class="pl-c">// "type"</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>+<span class="pl-pds">'</span></span>)             <span class="pl-c">// "combinator"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>*<span class="pl-pds">'</span></span>)             <span class="pl-c">// "universal"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>)           <span class="pl-c">// "type"</span>
 <span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>.bar<span class="pl-pds">'</span></span>)          <span class="pl-c">// "class"</span>
 <span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>#baz<span class="pl-pds">'</span></span>)          <span class="pl-c">// "id"</span>
 <span class="pl-smi">s</span>.<span class="pl-en">getType</span>(<span class="pl-s"><span class="pl-pds">'</span>[att]<span class="pl-pds">'</span></span>)         <span class="pl-c">// "attribute"</span>
@@ -183,10 +184,30 @@
 <span class="pl-smi">s</span>.<span class="pl-en">getPseudoProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>::before<span class="pl-pds">'</span></span>)               <span class="pl-c">// { vendor: null, name: 'before', args: null, colons: 2 }</span>
 <span class="pl-smi">s</span>.<span class="pl-en">getPseudoProperties</span>(<span class="pl-s"><span class="pl-pds">'</span>::-webkit-scrollbar<span class="pl-pds">'</span></span>)    <span class="pl-c">// { vendor: '-webkit-', name: 'scrollbar', args: null }</span></pre></div>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/selectors/selectors.js">Selectors.js</a> is maintained by <a href="https://github.com/JamesDonnelly">James Donnelly</a> as part of the <a href="https://github.com/selectors">Selectors</a> group on GitHub.</span>
+<h3>
+<a id="sstripnoise--selectorsgroup-" class="anchor" href="#sstripnoise--selectorsgroup-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>s.stripNoise ( selectorsGroup )</h3>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using a modified version of the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+<p>This function takes a selector sequence (like <code>"foo.bar"</code>) or a selectors group (like "<code>foo, .bar"</code>) <code>selectorsGroup</code> and returns the same string but with comments and style declarations stripped out.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">s</span>.<span class="pl-en">stripNoise</span>(<span class="pl-s"><span class="pl-pds">'</span>foo .bar #baz<span class="pl-pds">'</span></span>)                    <span class="pl-c">// "foo .bar #baz"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">stripNoise</span>(<span class="pl-s"><span class="pl-pds">'</span>foo /* .bar */ #baz<span class="pl-pds">'</span></span>)              <span class="pl-c">// "foo #baz"</span>
+<span class="pl-smi">s</span>.<span class="pl-en">stripNoise</span>(<span class="pl-s"><span class="pl-pds">'</span>foo, bar { background: red; }<span class="pl-pds">'</span></span>)    <span class="pl-c">// "foo, bar"</span></pre></div>
+
+<h2>
+<a id="build-and-test" class="anchor" href="#build-and-test" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build and Test</h2>
+
+<p>This uses <a href="http://gruntjs.com">Grunt</a> for minifying, concatenating and testing (<a href="http://jasmine.github.io/">Jasmine</a>). These are configured through <a href="https://nodejs.org/en/">Node.js</a>, so you'll also need to install that, then run the following command to install the packages:</p>
+
+<div class="highlight highlight-source-js"><pre>npm install</pre></div>
+
+<p>To compile the dist files and run the testing, install Grunt's command line interface (<code>npm install -g grunt-cli</code>), then run:</p>
+
+<div class="highlight highlight-source-js"><pre>grunt</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/selectors/selectors.js">Selectors.js</a> is maintained by <a href="https://github.com/selectors">selectors</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
 
     </section>
