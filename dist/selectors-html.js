@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Wednesday, 30th March 2016; 2:09:42 PM
+ * Last built: Thursday, 31st March 2016; 10:03:38 AM
  */
 
 "use strict";
@@ -347,6 +347,37 @@ s.getPseudoProperties = function(pseudoSelector) {
     r.colons = 2;
       
   return r;
+}
+
+/* This function takes a selectors group and returns a string without any noise, that is
+ * to say, any comments and style declarations.
+ * ------
+ * @{selectorsGroup}: A selector sequence (e.g. foo.bar) or selectors group (foo, bar)
+ *                    STRING.
+ */
+s.stripNoise = function(selectorsGroup) {
+  if (!selectorsGroup || typeof selectorsGroup !== "string")
+    return [];
+  
+  if (!s._r.stipNoise)
+    s._r.stripNoise = new RegExp(
+      "\\s*"
+      + "("
+        + "{.*$"
+      + "|"
+        + s._comment
+      + "|"
+        + s._badcomment
+      + ")"
+      , "gm"
+    );
+    
+  if (!s._r.newLines)
+    s._r.newLines = new RegExp(s._nl, "gm");
+    
+  return selectorsGroup.replace(s._r.newLines, '').replace(s._r.stripNoise, function(match) {
+    return '';
+  })
 };
 
 /* Source: src/helper.js
@@ -461,16 +492,16 @@ s._string = "(" + s._string1 + "|" + s._string2 + ")"
 //s._badstring = "(" + s._badstring1 + "|" + s._badstring2 + ")";
 
 // badcomment1      \/\*[^*]*\*+([^/*][^*]*\*+)*
-//s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\+)*";
+s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*";
 
 // badcomment2      \/\*[^*]*(\*+[^/*][^*]*)*
-//s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
+s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
 
 // badcomment       {badcomment1}|{badcomment2}
-//s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
+s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
 
 // comment		      \/\*[^*]*\*+([^/*][^*]*\*+)*\/
-//s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
+s._comment = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
 
 // baduri1          url\({w}([!#$%&*-\[\]-~]|{nonascii}|{escape})*{w}
 // baduri2          url\({w}{string}{w}

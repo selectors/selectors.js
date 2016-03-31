@@ -93,27 +93,27 @@ It's recommended **not** to use this if you're needing accurate results. Due to 
 This function takes a selectors group (like `"foo, .bar"`) and returns an array of selector sequences.
 
 ```JavaScript
-s.getSequences("foo.bar")            [ "foo.bar" ]
-s.getSequences("foo.bar, #baz")      [ "foo.bar", "#baz" ]
-s.getSequences("foo, .bar, #baz")    [ "foo", ".bar", "#baz" ]
+s.getSequences("foo.bar")            // [ "foo.bar" ]
+s.getSequences("foo.bar, #baz")      // [ "foo.bar", "#baz" ]
+s.getSequences("foo, .bar, #baz")    // [ "foo", ".bar", "#baz" ]
 ```
 
 ###s.getSelectors( selectorSequence )
 This function takes a selector sequence (like `"foo > .bar:hover"`) `selectorSequence` and returns an array of individual selectors.
 
 ```JavaScript
-s.getSelectors("foo")                 [ "foo" ]
-s.getSelectors("foo > .bar")          [ "foo", ">", ".bar" ]
-s.getSelectors("foo > .bar:hover")    [ "foo", ">", ".bar", ":hover" ]
+s.getSelectors("foo")                 // [ "foo" ]
+s.getSelectors("foo > .bar")          // [ "foo", ">", ".bar" ]
+s.getSelectors("foo > .bar:hover")    // [ "foo", ">", ".bar", ":hover" ]
 ```
 
 ###s.getElements( selectorSequence )
 This function takes a selector sequence (like `"foo > .bar:hover"`) `selectorSequence` and returns an array of arrays of individual selectors which make up individual elements (separated by combinators).
 
 ```JavaScript
-s.getElements("foo")                 [ [ "foo" ] ]
-s.getElements("foo > .bar")          [ [ "foo" ], [ ">", "bar" ] ]
-s.getElements("foo > .bar:hover")    [ [ "foo" ], [ ">", "bar", ":hover" ] ]
+s.getElements("foo")                 // [ [ "foo" ] ]
+s.getElements("foo > .bar")          // [ [ "foo" ], [ ">", "bar" ] ]
+s.getElements("foo > .bar:hover")    // [ [ "foo" ], [ ">", "bar", ":hover" ] ]
 ```
 
 ###s.getType( selector )
@@ -154,4 +154,13 @@ s.getPseudoProperties(':hover')                 // { vendor: null, name: 'hover'
 s.getPseudoProperties(':nth-child(2n + 1 )')    // { vendor: null, name: 'nth-child', args: '2n + 1 ' }
 s.getPseudoProperties('::before')               // { vendor: null, name: 'before', args: null, colons: 2 }
 s.getPseudoProperties('::-webkit-scrollbar')    // { vendor: '-webkit-', name: 'scrollbar', args: null }
+```
+
+###s.stripNoise ( selectorsGroup )
+This function takes a selector sequence (like `"foo.bar"`) or a selectors group (like "`foo, .bar"`) `selectorsGroup` and returns the same string but with comments and style declarations stripped out.
+
+```JavaScript
+s.stripNoise('foo .bar #baz')                    // "foo .bar #baz"
+s.stripNoise('foo /* .bar */ #baz')              // "foo #baz"
+s.stripNoise('foo, bar { background: red; }')    // "foo, bar"
 ```

@@ -335,3 +335,34 @@ s.getPseudoProperties = function(pseudoSelector) {
       
   return r;
 }
+
+/* This function takes a selectors group and returns a string without any noise, that is
+ * to say, any comments and style declarations.
+ * ------
+ * @{selectorsGroup}: A selector sequence (e.g. foo.bar) or selectors group (foo, bar)
+ *                    STRING.
+ */
+s.stripNoise = function(selectorsGroup) {
+  if (!selectorsGroup || typeof selectorsGroup !== "string")
+    return [];
+  
+  if (!s._r.stipNoise)
+    s._r.stripNoise = new RegExp(
+      "\\s*"
+      + "("
+        + "{.*$"
+      + "|"
+        + s._comment
+      + "|"
+        + s._badcomment
+      + ")"
+      , "gm"
+    );
+    
+  if (!s._r.newLines)
+    s._r.newLines = new RegExp(s._nl, "gm");
+    
+  return selectorsGroup.replace(s._r.newLines, '').replace(s._r.stripNoise, function(match) {
+    return '';
+  })
+}

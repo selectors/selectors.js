@@ -85,16 +85,16 @@ s._string = "(" + s._string1 + "|" + s._string2 + ")"
 //s._badstring = "(" + s._badstring1 + "|" + s._badstring2 + ")";
 
 // badcomment1      \/\*[^*]*\*+([^/*][^*]*\*+)*
-//s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\+)*";
+s._badcomment1 = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*";
 
 // badcomment2      \/\*[^*]*(\*+[^/*][^*]*)*
-//s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
+s._badcomment2 = "\\/\\*[^*]*(\\*+[^/*][^*]*)*";
 
 // badcomment       {badcomment1}|{badcomment2}
-//s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
+s._badcomment = "(" + s._badcomment1 + "|" + s._badcomment2 + ")";
 
 // comment		      \/\*[^*]*\*+([^/*][^*]*\*+)*\/
-//s._comment = "\\/\\*[^*]*\*+([^/*][^*]*\*+)*\\/";
+s._comment = "\\/\\*[^*]*\\*+([^/*][^*]*\\*+)*\\/";
 
 // baduri1          url\({w}([!#$%&*-\[\]-~]|{nonascii}|{escape})*{w}
 // baduri2          url\({w}{string}{w}
@@ -199,7 +199,7 @@ s._TILDE = s._w + "~";
 s._NOT = ":" + s._N + s._O + s._T + "\\(";
 
 // @{ident}         return ATKEYWORD;
-//s._ATKEYWORD = "@" + s._ident;
+// s._ATKEYWORD = "@" + s._ident;
 
 // {num}%           return PERCENTAGE;
 //s._PERCENTAGE = s._num + "%";
