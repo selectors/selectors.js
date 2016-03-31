@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Thursday, 31st March 2016; 10:03:38 AM
+ * Last built: Thursday, 31st March 2016; 10:20:58 AM
  */
 
 "use strict";
@@ -606,7 +606,7 @@ s._TILDE = s._w + "~";
 s._NOT = ":" + s._N + s._O + s._T + "\\(";
 
 // @{ident}         return ATKEYWORD;
-//s._ATKEYWORD = "@" + s._ident;
+// s._ATKEYWORD = "@" + s._ident;
 
 // {num}%           return PERCENTAGE;
 //s._PERCENTAGE = s._num + "%";
