@@ -143,6 +143,16 @@ s.getPseudoProperties('::before')               // { vendor: null, name: 'before
 s.getPseudoProperties('::-webkit-scrollbar')    // { vendor: '-webkit-', name: 'scrollbar', args: null }
 ```
 
+###s.getNegationInnerSelectorProperties( negationSelector )
+This function takes an individual negation selector (like `:not(.bar)`) `negationSelector` and returns an object of details about the selector it contains, including `selector` and `type`.
+
+```JavaScript
+s.getNegationInnerSelectorProperties(':not(.bar)')          // { selector: '.bar', type: 'class' }
+s.getNegationInnerSelectorProperties(':not([att*=val])')    // { selector: '[att*=val]', type: 'attribute' }
+```
+
+This will throw an error if another negation selector or a pseudo-element is the selector contained inside (like `:not(:not(.bar))` as these aren't valid.
+
 ###s.stripNoise ( selectorsGroup )
 This function takes a selector sequence (like `"foo.bar"`) or a selectors group (like "`foo, .bar"`) `selectorsGroup` and returns the same string but with comments and style declarations stripped out.
 
