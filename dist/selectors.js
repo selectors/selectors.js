@@ -4,7 +4,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Thursday, 31st March 2016; 10:20:58 AM
+ * Last built: Friday, 1st April 2016; 11:30:48 AM
  */
 
 "use strict";
@@ -189,13 +189,13 @@ s.getSelectors = function(selectorSequence) {
     
   if (!s._r.getSelectors)
     s._r.getSelectors = new RegExp(
-          s._type_selector
+        s._negation
+        + "|" + s._type_selector
         + "|" + s._universal
         + "|" + s._HASH
         + "|" + s._class
         + "|" + s._attrib
         + "|::?(" + s._functional_pseudo + "|" + s._ident + ")"
-        + "|" + s._negation
         + "|" + s._combinator, "g"
       );
   

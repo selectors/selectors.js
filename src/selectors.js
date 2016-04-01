@@ -178,13 +178,13 @@ s.getSelectors = function(selectorSequence) {
     
   if (!s._r.getSelectors)
     s._r.getSelectors = new RegExp(
-          s._type_selector
+        s._negation
+        + "|" + s._type_selector
         + "|" + s._universal
         + "|" + s._HASH
         + "|" + s._class
         + "|" + s._attrib
         + "|::?(" + s._functional_pseudo + "|" + s._ident + ")"
-        + "|" + s._negation
         + "|" + s._combinator, "g"
       );
   
