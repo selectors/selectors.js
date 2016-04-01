@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Friday, 1st April 2016; 11:30:48 AM
+ * Last built: Friday, 1st April 2016; 12:24:01 PM
  */
 
 "use strict";
@@ -296,8 +296,8 @@ s.getAttributeProperties = function(attributeSelector) {
   return r;
 }
 
-/* This function takes an individual attribute selector and returns an object containing
- * relevant information about it.
+/* This function takes an individual pseudo-class or pseudo-element selector and returns
+ * an object containing relevant information about it.
  * 
  *   :-custom-foo(bar)
  * 
@@ -346,6 +346,41 @@ s.getPseudoProperties = function(pseudoSelector) {
     || pseudoSelector === "::after")
     r.colons = 2;
       
+  return r;
+}
+
+/* This function takes an individual negation selector and returns an object containing
+ * relevant information about the selector it contains.
+ * 
+ *   :not(.bar)
+ * 
+ *   -> {
+ *     selector: ".bar",
+ *     type: "class"
+ *   }
+ * 
+ * ------
+ * @{negationSelector}: An individual negation selector STRING (e.g. :not(foo)).
+ */
+s.getNegationInnerSelectorProperties = function(negationSelector) {
+  if (!negationSelector || typeof negationSelector !== "string")
+    return false;
+  
+  var selectorType = s.getType(negationSelector);
+  if (selectorType !== "negation")
+    throw new Error("s.getNegationInnerSelectorProperties should be passed 1 valid negation selector, instead was passed " + pseudoSelector);
+    
+  var 
+    innerSelector = s._getArgsFromPseudoClass(negationSelector),
+    r = {
+      selector: innerSelector,
+      type: s.getType(innerSelector)
+    }
+  ;
+  
+  if (r.type === "negation" || r.type === "pseudo-element")
+    throw new Error("s.getNegationInnerSelectorProperties was passed a negation selector containing a " + r.type + " selector. Negation selectors are not allowed to contain other negation selectors or pseudo-element selectors.")
+  
   return r;
 }
 
