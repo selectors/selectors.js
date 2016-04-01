@@ -67,7 +67,7 @@ s.isValidSelector('[potato]', true)         // false
 ```
 
 ### s.quickValidation ( selectors )
-This function takes a selector sequence (like `"foo.bar"`, a selectors group (like "`foo, .bar"`) or an individual selector (`[bar=baz]`) `selectors` and performs fast validation by wrapping `document.querySelector`.
+This function takes a selector sequence (like `"foo.bar"`), a selectors group (like "`foo, .bar"`) or an individual selector (`[bar=baz]`) `selectors` and performs fast validation by wrapping `document.querySelector`.
 
 ```JavaScript
 s.quickValidation('foo')          // true
