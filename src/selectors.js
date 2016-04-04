@@ -53,7 +53,7 @@ s.isValidSelector = function(selector, htmlStrict) {
    * selector exception.
    */
   try {
-    switch (s.getType(selector)) {
+    switch (s.getType(selector).type) {
       case "type":
         if (htmlStrict)
           return s._isValidHtml("type", selector);
@@ -107,42 +107,57 @@ s.quickValidation = function(selectors) {
   }
 }
 
-/* This function takes an individual selector and returns what it is (e.g. an input of
- * ".foo" would return "class").
+/* This function takes an individual selector and returns an object containing what the
+ * selector is and what its namespace is  (e.g. an input of ".foo" would return
+ * { namespace: null, type: "class" }).
  * ------
  * @(selector): An individual CSS selector STRING (e.g. foo or .bar).
  */
 s.getType = function(selector) {
   if (!selector || typeof selector !== "string")
     throw new Error("s.getType should be passed a non-empty string value, instead was passed " + selector);
+    
+  var
+    parts,
+    type
+  ;
   
   if (s._isExactMatch(s._combinator, selector))
-    return "combinator";
-  else if (s._isExactMatch(s._type_selector, selector))
-    return "type";
-  else if (s._isExactMatch(s._universal, selector))
-    return "universal";
+    type = "combinator";
+  else if (s._isExactMatch(s._type_selector, selector)) {
+    parts = s._splitNamespaceAndName(selector);
+    type = "type";
+  }
+  else if (s._isExactMatch(s._universal, selector)) {
+    parts = s._splitNamespaceAndName(selector);
+    type = "universal";
+  }
   else if (s._isExactMatch(s._class, selector))
-    return "class";
+    type = "class";
   else if (s._isExactMatch(s._HASH, selector))
-    return "id";
+    type = "id";
   else if (s._isExactMatch(s._attrib, selector))
-    return "attribute";
+    type = "attribute";
   else if (s._isExactMatch(s._negation, selector))
-    return "negation";
+    type = "negation";
   else if (s._isExactMatch(s._pseudo, selector)) {
     if (selector.charAt(1) !== ":"
       && selector !== ":first-line"
       && selector !== ":first-letter"
       && selector !== ":before"
       && selector !== ":after")
-      return "pseudo-class";
+      type = "pseudo-class";
     else
-      return "pseudo-element";
+      type = "pseudo-element";
   }
   else
     // If none of the above match, invalid or multiple selectors have been passed in.
     throw new Error("s.getType should be passed 1 valid selector, instead was passed: " + selector);
+    
+  if (parts)
+    return { namespace: parts.namespace, type: type };
+  
+  return { type: type };
 }
 
 /* This function takes a selectors group and returns an array of the selector sequences
@@ -179,8 +194,15 @@ s.getSelectors = function(selectorSequence) {
   if (!s._r.getSelectors)
     s._r.getSelectors = new RegExp(
         s._negation
-        + "|" + s._type_selector
-        + "|" + s._universal
+        + "|"
+          + "("
+            + s._namespace_prefix
+            + "?"
+            + "("
+              + s._type_selector
+              + "|" + s._universal
+            + ")"
+          + ")"
         + "|" + s._HASH
         + "|" + s._class
         + "|" + s._attrib
@@ -220,7 +242,7 @@ s.getElements = function(selectorSequence) {
   ;
   
   s.getSelectors(selectorSequence).forEach(function(selector, index) {
-    if (index === 0 || s.getType(selector) === "combinator")
+    if (index === 0 || s.getType(selector).type === "combinator")
       elementIndex = r.push([]) - 1;
       
     r[elementIndex].push(selector);
@@ -248,7 +270,7 @@ s.getAttributeProperties = function(attributeSelector) {
   if (!attributeSelector || typeof attributeSelector !== "string")
     return false;
     
-  if (s.getType(attributeSelector) !== "attribute")
+  if (s.getType(attributeSelector).type !== "attribute")
     throw new Error("s.getAttributeProperties should be passed 1 valid attribute selector, instead was passed " + attributeSelector);
     
   var
@@ -307,7 +329,7 @@ s.getPseudoProperties = function(pseudoSelector) {
   if (!pseudoSelector || typeof pseudoSelector !== "string")
     return false;
   
-  var selectorType = s.getType(pseudoSelector);
+  var selectorType = s.getType(pseudoSelector).type;
   if (selectorType !== "pseudo-class"
     && selectorType !== "pseudo-element")
     throw new Error("s.getPseudoProperties should be passed 1 valid pseudo-class or pseudo-element selector, instead was passed " + pseudoSelector);
@@ -353,7 +375,7 @@ s.getNegationInnerSelectorProperties = function(negationSelector) {
   if (!negationSelector || typeof negationSelector !== "string")
     return false;
   
-  var selectorType = s.getType(negationSelector);
+  var selectorType = s.getType(negationSelector).type;
   if (selectorType !== "negation")
     throw new Error("s.getNegationInnerSelectorProperties should be passed 1 valid negation selector, instead was passed " + pseudoSelector);
     
@@ -361,7 +383,7 @@ s.getNegationInnerSelectorProperties = function(negationSelector) {
     innerSelector = s._getArgsFromPseudoClass(negationSelector),
     r = {
       selector: innerSelector,
-      type: s.getType(innerSelector)
+      type: s.getType(innerSelector).type
     }
   ;
   

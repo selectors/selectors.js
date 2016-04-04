@@ -104,19 +104,20 @@ s.getElements("foo > .bar:hover")    // [ [ "foo" ], [ ">", "bar", ":hover" ] ]
 ```
 
 ###s.getType( selector )
-This function takes an individual `selector` (like `"foo"` or `".bar"`) and returns what type of selector it is.
+This function takes an individual `selector` (like `"foo"` or `".bar"`) and returns an object containing what type of selector it is and what its namespace is (if it's a type or universal selector).
 
 ```JavaScript
-s.getType('+')             // "combinator"
-s.getType('*')             // "universal"
-s.getType('div')           // "type"
-s.getType('.bar')          // "class"
-s.getType('#baz')          // "id"
-s.getType('[att]')         // "attribute"
-s.getType(':foo')          // "pseudo-class"
-s.getType('::foo')         // "pseudo-element"
-s.getType(':foo(n)')       // "pseudo-class"
-s.getType(':not(.bar)')    // "negation"
+s.getType('+')             // { type: "combinator" }
+s.getType('ns|*')          // { namespace: "ns", type: "universal" }
+s.getType('div')           // { namespace: null, type: "type" }
+s.getType('|div')          // { namespace: "", type: "type" }
+s.getType('.bar')          // { type: "class" }
+s.getType('#baz')          // { type: "id" }
+s.getType('[att]')         // { type: "attribute" }
+s.getType(':foo')          // { type: "pseudo-class" }
+s.getType('::foo')         // { type: "pseudo-element" }
+s.getType(':foo(n)')       // { type: "pseudo-class" }
+s.getType(':not(.bar)')    // { type: "negation" }
 ```
 
 ###s.getAttributeProperties( attributeSelector )
