@@ -1,6 +1,6 @@
 {
   "name": "selectors.js",
-  "version": "1.0.0",
+  "version": "1.0.59",
   "description": "Matches and validates CSS selectors.",
   "main": "dist/selectors.min.js",
   "directories": {
