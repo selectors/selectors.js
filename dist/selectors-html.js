@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/selectors/selectors.js/blob/master/LICENSE.md
 
- * Last built: Monday, 4th April 2016; 11:06:21 AM
+ * Last built: Wednesday, 6th April 2016; 2:09:08 PM
  */
 
 "use strict";
